@@ -5,10 +5,114 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemOgloszeniowyWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="System ogłoszeniowy" Height="610" Width="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="MenuItemBaseStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="1">
+                            <Grid SnapsToDevicePixels="true">
+                                <DockPanel>
+                                    <ContentPresenter x:Name="Icon" ContentSource="Icon" Margin="0,0,0,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                                    <Path x:Name="GlyphPanel" Fill="{TemplateBinding Foreground}" FlowDirection="LeftToRight" Margin="7,0,0,0" Visibility="Collapsed" VerticalAlignment="Center"/>
+                                    <ContentPresenter x:Name="content" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </DockPanel>
+                                <Popup x:Name="PART_Popup" AllowsTransparency="true" Focusable="false" HorizontalOffset="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Bottom" VerticalOffset="-1">
+                                    <Border BorderThickness="2" BorderBrush="Cyan" Background="#222222">
+                                        <ScrollViewer x:Name="SubMenuScrollViewer" CanContentScroll="true" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                                            <Grid RenderOptions.ClearTypeHint="Enabled">
+                                                <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Cycle" Grid.IsSharedSizeScope="true" Margin="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.TabNavigation="Cycle"/>
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="TextBlock.Foreground" Value="Cyan" TargetName="content"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+ 
+
+
     <Grid>
-        <StackPanel>
-            
-        </StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>  
+
+            <Menu Grid.Row="0" Background="#222222" Height="50">
+                <MenuItem Style="{StaticResource MenuItemBaseStyle}" Margin="0,5,0,0">
+                    <MenuItem.Icon>
+                        <Image Source="Images/logo-MoonWork.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="MoonWork" VerticalAlignment="Center" Style="{StaticResource MenuItemBaseStyle}" Foreground="White" Margin="-20,5,0,0" />
+                <MenuItem Header="Strona główna" x:Name="uzytkownik" Style="{StaticResource MenuItemBaseStyle}" VerticalAlignment="Center" Foreground="White" Margin="0,5,0,0"/>
+                <MenuItem Header="Konto" Margin="0,18,0,0" Foreground="White" Style="{StaticResource MenuItemBaseStyle}">
+                    <MenuItem Header="Zaloguj się" x:Name="Zal" Foreground="White" />
+                    <MenuItem Header="Wyloguj się" x:Name="Wyl" Foreground="White" />
+                </MenuItem>
+                <MenuItem Header="Panel admina" Style="{StaticResource MenuItemBaseStyle}" Margin="0,18,0,0" Foreground="White" x:Name="PanelAdm"  />
+            </Menu>
+
+
+            <ScrollViewer Grid.Row="2">
+                <StackPanel>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label Content="67 542" FontSize="25"/>
+                            <Label Content="Sprawdzone oferty pracy" FontSize="25"/>
+                        </StackPanel>
+                        <Label Content="od najlepszych pracodawców" FontSize="15" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Border CornerRadius="5" Margin="0,40,0,0" BorderBrush="Black" HorizontalAlignment="Center" Padding="20" Background="gray" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1">
+                                <TextBox Width="200" x:Name="searchBar"  TextChanged="TextBox_TextChanged"/>
+                            </Border>
+                            <ComboBox  Width="200">
+                                <ComboBoxItem Content="Kategoria 1"/>
+                                <ComboBoxItem Content="Kategoria 2"/>
+                                <ComboBoxItem Content="Kategoria 3"/>
+                            </ComboBox>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <ListView x:Name="produktyListView" BorderThickness="0" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding Zdjecie}" Width="100" Height="100" />
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Marka}" />
+                                            <TextBlock Text="{Binding Cena}" />
+                                            <TextBlock Text="{Binding Opis}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
