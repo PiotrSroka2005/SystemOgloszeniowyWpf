@@ -41,78 +41,143 @@
             </Setter>
         </Style>
     </Window.Resources>
- 
-
 
     <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>  
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Menu Grid.Row="0" Background="#222222" Height="50">
-                <MenuItem Style="{StaticResource MenuItemBaseStyle}" Margin="0,5,0,0">
-                    <MenuItem.Icon>
-                        <Image Source="Images/logo-MoonWork.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="MoonWork" VerticalAlignment="Center" Style="{StaticResource MenuItemBaseStyle}" Foreground="White" Margin="-20,5,0,0" />
-                <MenuItem Header="Strona główna" x:Name="uzytkownik" Style="{StaticResource MenuItemBaseStyle}" VerticalAlignment="Center" Foreground="White" Margin="0,5,0,0"/>
-                <MenuItem Header="Konto" Margin="0,18,0,0" Foreground="White" Style="{StaticResource MenuItemBaseStyle}">
-                    <MenuItem Header="Zaloguj się" x:Name="Zal" Foreground="White" />
-                    <MenuItem Header="Wyloguj się" x:Name="Wyl" Foreground="White" />
-                </MenuItem>
-                <MenuItem Header="Panel admina" Style="{StaticResource MenuItemBaseStyle}" Margin="0,18,0,0" Foreground="White" x:Name="PanelAdm"  />
-            </Menu>
+        <Menu Grid.Row="0" Background="#222222" Height="50">
+            <MenuItem Style="{StaticResource MenuItemBaseStyle}" Margin="0,5,0,0">
+                <MenuItem.Icon>
+                    <Image Source="Images/logo-MoonWork.png"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="MoonWork" VerticalAlignment="Center" Style="{StaticResource MenuItemBaseStyle}" Foreground="White" Margin="-20,5,0,0" />
+            <MenuItem Header="Konto" Margin="0,19,0,0" Foreground="White" Style="{StaticResource MenuItemBaseStyle}">
+                <MenuItem Header="Profil" x:Name="Profil" MenuItem.Click="Profil_Click" Foreground="White" />
+                <MenuItem Header="Zaloguj się" x:Name="Zal" Foreground="White" />
+                <MenuItem Header="Wyloguj się" x:Name="Wyl" Foreground="White" />
+            </MenuItem>
+            <MenuItem Header="Panel admina" Style="{StaticResource MenuItemBaseStyle}" Margin="0,19,0,0" Foreground="White" x:Name="PanelAdm"  />
+        </Menu>
 
 
-            <ScrollViewer Grid.Row="2">
+        <ScrollViewer Grid.Row="2">
+            <StackPanel>
                 <StackPanel>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Label Content="67 542" FontSize="25"/>
-                            <Label Content="Sprawdzone oferty pracy" FontSize="25"/>
-                        </StackPanel>
-                        <Label Content="od najlepszych pracodawców" FontSize="15" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="67 542" FontSize="25"/>
+                        <Label Content="Sprawdzone oferty pracy" FontSize="25"/>
                     </StackPanel>
-                    <StackPanel>
-                        <Border CornerRadius="5" Margin="0,40,0,0" BorderBrush="Black" HorizontalAlignment="Center" Padding="20" Background="gray" BorderThickness="1">
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1">
-                                <TextBox Width="200" x:Name="searchBar"  TextChanged="TextBox_TextChanged"/>
-                            </Border>
-                            <ComboBox  Width="200">
-                                <ComboBoxItem Content="Kategoria 1"/>
-                                <ComboBoxItem Content="Kategoria 2"/>
-                                <ComboBoxItem Content="Kategoria 3"/>
-                            </ComboBox>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                    <ListView x:Name="produktyListView" BorderThickness="0" >
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Source="{Binding Zdjecie}" Width="100" Height="100" />
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Marka}" />
-                                            <TextBlock Text="{Binding Cena}" />
-                                            <TextBlock Text="{Binding Opis}" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <Label Content="od najlepszych pracodawców" FontSize="15" HorizontalAlignment="Center"/>
                 </StackPanel>
-            </ScrollViewer>
-        </Grid>
+                <StackPanel>
+                    <Border CornerRadius="5" Margin="0,20,0,0" Width="700" Height="200" BorderBrush="#222222" HorizontalAlignment="Center" Padding="25" Background="gray" BorderThickness="2">
+                        <StackPanel HorizontalAlignment="Center">
+                            <StackPanel  Orientation="Horizontal">
+                                <Label Content="Szukaj stanowisko,słowo kluczowe:" FontSize="15"/>
+                                <Label Margin="165,0,0,0" Content="Kategoria:" FontSize="15"/>
+                            </StackPanel>
+                            <StackPanel  Orientation="Horizontal">
+                                <Border CornerRadius="5" BorderBrush="#222222" BorderThickness="1">
+                                    <TextBox Width="400" x:Name="searchBar" Height="30" FontSize="20"  TextChanged="TextBox_TextChanged"/>
+                                </Border>
+                                <ComboBox  Width="200">
+                                    <ComboBoxItem Content="Kategoria 1"/>
+                                    <ComboBoxItem Content="Kategoria 2"/>
+                                    <ComboBoxItem Content="Kategoria 3"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                                        <Label Content="Poziom stanowiska" Margin="-5,0,0,0"/>
+                                        <Label Content="Rodzaj umowy" Margin="12,0,0,0"/>
+                                        <Label Content="Wymiary pracy" Margin="20,0,0,0"/>
+                                        <Label Content="Tryb pracy" Margin="30,0,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox  Width="100">
+                                            <ComboBoxItem Content="Kategoria 1"/>
+                                            <ComboBoxItem Content="Kategoria 2"/>
+                                            <ComboBoxItem Content="Kategoria 3"/>
+                                        </ComboBox>
+                                        <ComboBox  Width="100" Margin="10,0,0,0">
+                                            <ComboBoxItem Content="Kategoria 1"/>
+                                            <ComboBoxItem Content="Kategoria 2"/>
+                                            <ComboBoxItem Content="Kategoria 3"/>
+                                        </ComboBox>
+                                        <ComboBox  Width="100" Margin="10,0,0,0">
+                                            <ComboBoxItem Content="Kategoria 1"/>
+                                            <ComboBoxItem Content="Kategoria 2"/>
+                                            <ComboBoxItem Content="Kategoria 3"/>
+                                        </ComboBox>
+                                        <ComboBox  Width="100" Margin="10,0,0,0">
+                                            <ComboBoxItem Content="Kategoria 1"/>
+                                            <ComboBoxItem Content="Kategoria 2"/>
+                                            <ComboBoxItem Content="Kategoria 3"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Margin="40,40,0,0">
+                                    <Border CornerRadius="5" BorderBrush="White">
+                                        <Button Content="Szukaj" Height="40" Width="100" x:Name="Szukaj" >
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Height" Value="40"/>
+                                                    <Setter Property="Width" Value="100"/>
+                                                    <Setter Property="Background" Value="#222222"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}" BorderBrush="White" BorderThickness="1" CornerRadius="5">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Foreground" Value="Cyan"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                <StackPanel Margin="0,20,0,0">
+                    <Label Content="Najnowsze oferty" HorizontalAlignment="Center" FontSize="25"/>
+                </StackPanel>
+                <ListView x:Name="produktyListView" BorderThickness="0" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Zdjecie}" Width="100" Height="100" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Marka}" />
+                                        <TextBlock Text="{Binding Cena}" />
+                                        <TextBlock Text="{Binding Opis}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>
