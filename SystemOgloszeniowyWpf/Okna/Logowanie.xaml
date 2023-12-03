@@ -1,0 +1,50 @@
+﻿<Window x:Class="SystemOgloszeniowyWpf.Okna.Logowanie"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SystemOgloszeniowyWpf.Okna"
+        mc:Ignorable="d"
+        Title="Logowanie" Height="610" Width="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="CustomButton">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Background" Value="#222222"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="White" BorderThickness="1" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Cyan"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="5" Margin="0,0,0,0" Width="380" Height="300" BorderBrush="#222222" HorizontalAlignment="Center" Padding="25" Background="gray" BorderThickness="2">
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Użytkownik:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,15,0,0" />
+            <TextBox x:Name="UsernameTextBox" FontSize="16" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,20,20,0" Width="200" />
+
+            <Label Content="Hasło:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,55,0,0" />
+            <PasswordBox x:Name="PasswordTextBox" FontSize="16" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,60,20,0" Width="200" />
+
+            <Button x:Name="LoginButton" Content="Zaloguj" HorizontalAlignment="Center" Style="{StaticResource CustomButton}" VerticalAlignment="Top" Margin="0,100,0,0" Width="100" Click="LoginButton_Click" />
+
+            <Button Content="Rejestracja" Click="Rejestracja" HorizontalAlignment="Center" Style="{StaticResource CustomButton}" VerticalAlignment="Top" Margin="0,135,0,0" Width="100"/>
+
+            <Button Content="Strona główna" Click="StronaGlowna" HorizontalAlignment="Center" Style="{StaticResource CustomButton}" VerticalAlignment="Top" Margin="0,170,0,0" Width="100"/>
+        </Grid>
+    </Border>
+</Window>

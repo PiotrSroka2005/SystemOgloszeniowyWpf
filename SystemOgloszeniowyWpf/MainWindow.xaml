@@ -39,6 +39,28 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="Button" x:Key="CustomButton">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Background" Value="#222222"/>
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="White" BorderThickness="1" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Cyan"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -56,10 +78,11 @@
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="MoonWork" VerticalAlignment="Center" Style="{StaticResource MenuItemBaseStyle}" Foreground="White" Margin="-20,5,0,0" />
-            <MenuItem Header="Konto" Margin="0,19,0,0" Foreground="White" Style="{StaticResource MenuItemBaseStyle}">
+            <MenuItem Header="Konto" Margin="0,18,0,0" Foreground="White" Style="{StaticResource MenuItemBaseStyle}">
+                <MenuItem Header="" x:Name="uzytkownik" VerticalAlignment="Center" Foreground="White"/>
                 <MenuItem Header="Profil" x:Name="Profil" MenuItem.Click="Profil_Click" Foreground="White" />
-                <MenuItem Header="Zaloguj się" x:Name="Zal" Foreground="White" />
-                <MenuItem Header="Wyloguj się" x:Name="Wyl" Foreground="White" />
+                <MenuItem Header="Zaloguj się" x:Name="Zal" Foreground="White" Click="ZalogujSie_Click" />
+                <MenuItem Header="Wyloguj się" x:Name="Wyl" Foreground="White" Click="WylogujSie_Click" />
             </MenuItem>
             <MenuItem Header="Panel admina" Style="{StaticResource MenuItemBaseStyle}" Margin="0,19,0,0" Foreground="White" x:Name="PanelAdm"  />
         </Menu>
@@ -82,7 +105,7 @@
                                 <Label Margin="165,0,0,0" Content="Kategoria:" FontSize="15"/>
                             </StackPanel>
                             <StackPanel  Orientation="Horizontal">
-                                <Border CornerRadius="5" BorderBrush="#222222" BorderThickness="1">
+                                <Border CornerRadius="5" BorderBrush="#222222" BorderThickness="2">
                                     <TextBox Width="400" x:Name="searchBar" Height="30" FontSize="20"  TextChanged="TextBox_TextChanged"/>
                                 </Border>
                                 <ComboBox  Width="200">
@@ -124,30 +147,7 @@
                                 </StackPanel>
                                 <StackPanel Margin="40,40,0,0">
                                     <Border CornerRadius="5" BorderBrush="White">
-                                        <Button Content="Szukaj" Height="40" Width="100" x:Name="Szukaj" >
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Height" Value="40"/>
-                                                    <Setter Property="Width" Value="100"/>
-                                                    <Setter Property="Background" Value="#222222"/>
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <Border Background="{TemplateBinding Background}" BorderBrush="White" BorderThickness="1" CornerRadius="5">
-                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </Border>
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Foreground" Value="Cyan"/>
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
+                                        <Button Content="Szukaj" Height="40" Width="100" x:Name="Szukaj" Style="{StaticResource CustomButton}"/>
                                     </Border>
                                 </StackPanel>
                             </StackPanel>
@@ -157,26 +157,23 @@
                 <StackPanel Margin="0,20,0,0">
                     <Label Content="Najnowsze oferty" HorizontalAlignment="Center" FontSize="25"/>
                 </StackPanel>
-                <ListView x:Name="produktyListView" BorderThickness="0" >
-                    <ListView.ItemTemplate>
+                <ItemsControl ItemsSource="{Binding Path=Ogloszenia, UpdateSourceTrigger=PropertyChanged}" x:Name="test">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3" MaxWidth="1200"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Image Source="{Binding Zdjecie}" Width="100" Height="100" />
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Marka}" />
-                                        <TextBlock Text="{Binding Cena}" />
-                                        <TextBlock Text="{Binding Opis}" />
-                                    </StackPanel>
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="25" CornerRadius="5">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Tytul}" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding PoziomStanowiska}" />
                                 </StackPanel>
-                            </Grid>
+                            </Border>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </ScrollViewer>
     </Grid>

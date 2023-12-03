@@ -11,46 +11,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SystemOgloszeniowyWpf.Klasy;
 using SystemOgloszeniowyWpf.Okna;
 
 namespace SystemOgloszeniowyWpf
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Logika interakcji dla klasy Profil.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ProfilWindow : Window
     {
-
         private int admin = 0;
         private bool logged = false;
         private string usermn = "";
 
-
-        public MainWindow()
+        public ProfilWindow(int adm, bool log, string user)
         {
             InitializeComponent();
-
-            Baza.TabelaUzytkownikow();
-            Baza.TabelaOgloszenia();
-
-            uzytkownik.Visibility = Visibility.Collapsed;
-            PanelAdm.Visibility = Visibility.Collapsed;
-            Wyl.Visibility = Visibility.Collapsed;
-
-            MainViewModel viewModel = new MainViewModel();
-            DataContext = viewModel;
-
-            // Wczytaj ogłoszenia
-            viewModel.Ogloszenia = Baza.CzytajWszystkieOgloszenia();
-        }
-
-        public MainWindow(int adm, bool log, string user)
-        {
-            InitializeComponent();
-
             PanelAdm.Visibility = Visibility.Collapsed;
             usermn = user;
             admin = adm;
@@ -59,7 +36,7 @@ namespace SystemOgloszeniowyWpf
             if (logged == false)
             {
                 Wyl.Visibility = Visibility.Collapsed;
-                uzytkownik.Visibility = Visibility.Collapsed;                
+                uzytkownik.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -74,28 +51,6 @@ namespace SystemOgloszeniowyWpf
                     PanelAdm.Visibility = Visibility.Collapsed;
                 }
             }
-
-            Baza.TabelaUzytkownikow();
-            Baza.TabelaOgloszenia();
-
-            MainViewModel viewModel = new MainViewModel();
-            DataContext = viewModel;
-
-            // Wczytaj ogłoszenia
-            viewModel.Ogloszenia = Baza.CzytajWszystkieOgloszenia();
-        }
-        
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Profil_Click(object sender, RoutedEventArgs e)
-        {
-            ProfilWindow p = new ProfilWindow(admin, logged, usermn);
-            p.Show();
-            this.Close();
         }
 
         private void ZalogujSie_Click(object sender, RoutedEventArgs e)
@@ -111,5 +66,14 @@ namespace SystemOgloszeniowyWpf
             mainWindow.Show();
             this.Hide();
         }
+
+
+        private void StronaGlowna(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainwindow = new MainWindow(admin, logged, usermn);
+            mainwindow.Show();
+            this.Close();
+        }
+        
     }
 }
