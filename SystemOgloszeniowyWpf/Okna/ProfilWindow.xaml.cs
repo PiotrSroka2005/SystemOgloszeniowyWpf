@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SystemOgloszeniowyWpf.Okna;
+using SystemOgloszeniowyWpf.Okna.Admin;
 
 namespace SystemOgloszeniowyWpf
 {
@@ -74,6 +75,13 @@ namespace SystemOgloszeniowyWpf
             mainwindow.Show();
             this.Close();
         }
-        
+
+        private void PanelAdmina_Click(object sender, RoutedEventArgs e)
+        {
+            AdminWindow d = new AdminWindow(admin, logged, usermn);
+            d.Show();
+            this.Close();
+        }
+
     }
 }

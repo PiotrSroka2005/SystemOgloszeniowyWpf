@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SystemOgloszeniowyWpf.Klasy;
 using SystemOgloszeniowyWpf.Okna;
+using SystemOgloszeniowyWpf.Okna.Admin;
 
 namespace SystemOgloszeniowyWpf
 {
@@ -39,6 +40,7 @@ namespace SystemOgloszeniowyWpf
             uzytkownik.Visibility = Visibility.Collapsed;
             PanelAdm.Visibility = Visibility.Collapsed;
             Wyl.Visibility = Visibility.Collapsed;
+            profil.Visibility = Visibility.Collapsed;
 
             MainViewModel viewModel = new MainViewModel();
             DataContext = viewModel;
@@ -59,7 +61,8 @@ namespace SystemOgloszeniowyWpf
             if (logged == false)
             {
                 Wyl.Visibility = Visibility.Collapsed;
-                uzytkownik.Visibility = Visibility.Collapsed;                
+                uzytkownik.Visibility = Visibility.Collapsed;     
+                profil.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -110,6 +113,13 @@ namespace SystemOgloszeniowyWpf
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             this.Hide();
+        }
+
+        private void PanelAdmina_Click(object sender, RoutedEventArgs e)
+        {
+            AdminWindow d = new AdminWindow(admin, logged, usermn);
+            d.Show();
+            this.Close();
         }
     }
 }

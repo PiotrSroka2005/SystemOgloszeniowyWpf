@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace SystemOgloszeniowyWpf.Klasy
 {
     public class Ogloszenie
     {
-        public int Id { get; set; }
+        public int OgloszenieId { get; set; }
 
         public string Tytul {  get; set; }
 
@@ -20,9 +21,11 @@ namespace SystemOgloszeniowyWpf.Klasy
 
         public string WymiarZatrudnienia { get; set; }
 
-        public int Kategoria {  get; set; }
+        public int KategoriaId {  get; set; }
 
-        public int Firma {  get; set; }
+        public int FirmaId {  get; set; }
+
+        public string NazwaFirmy { get; set; }
 
         public string RodzajUmowy {  get; set; }
 
@@ -46,15 +49,17 @@ namespace SystemOgloszeniowyWpf.Klasy
 
         public DateTime DataUtworzenia { get; set; }
 
-        public Ogloszenie(int id, int kategoria, int firma, string tytul, string nazwaStanowiska, string poziomStanowska, string rodzajPracy, string wymiarZatrudnienia, string rodzajUmowy, decimal? najmniejszeWynagrodzenie,
-        decimal? najwiekszeWynagrodzenie, string dniPracy, string godzinyPracy, DateTime dataWaznosci, string obowiazki, string wymagania, string benefity, string informacje, DateTime dataUtworzenia)
+        public string Zdjecie { get; set; }
+
+        public Ogloszenie(int ogloszenieId, int kategoriaId, int firmaId, string tytul, string nazwaStanowiska, string poziomStanowiska, string rodzajPracy, string wymiarZatrudnienia, string rodzajUmowy, decimal? najmniejszeWynagrodzenie,
+        decimal? najwiekszeWynagrodzenie, string dniPracy, string godzinyPracy, DateTime dataWaznosci, string obowiazki, string wymagania, string benefity, string informacje, DateTime dataUtworzenia, string zdjecie)
         {
-            Id = id;
-            Kategoria = kategoria;
-            Firma = firma;
+            OgloszenieId = ogloszenieId;
+            KategoriaId = kategoriaId;
+            FirmaId = firmaId;
             Tytul = tytul;
             NazwaStanowiska = nazwaStanowiska;
-            PoziomStanowiska = poziomStanowska;
+            PoziomStanowiska = poziomStanowiska;
             RodzajPracy = rodzajPracy;
             WymiarZatrudnienia = wymiarZatrudnienia;
             RodzajUmowy = rodzajUmowy;
@@ -68,6 +73,46 @@ namespace SystemOgloszeniowyWpf.Klasy
             Benefity = benefity;
             Informacje = informacje;
             DataUtworzenia = dataUtworzenia;
+            Zdjecie = zdjecie;
+            AktualizujNazweFirmy();            
+        }
+
+        public Firma PobierzDaneOFirmie(int firmaId)
+        {
+            Firma firma = null;
+
+            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                string selectCommand = "SELECT * FROM firmy WHERE firma_id = @FirmaId";
+                using (var selectStatement = new SqliteCommand(selectCommand, db))
+                {
+                    selectStatement.Parameters.AddWithValue("@FirmaId", firmaId);
+
+                    using (var reader = selectStatement.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            firma = new Firma
+                            {
+                                FirmaId = reader.GetInt32(0),
+                                FirmaNazwa = reader.GetString(1)
+                            };
+                        }
+                    }
+                }
+            }
+
+            return firma;
+        }
+
+        public void AktualizujNazweFirmy()
+        {
+            var firma = PobierzDaneOFirmie(FirmaId);
+            NazwaFirmy = firma != null ? firma.FirmaNazwa : string.Empty;
         }
 
         public Ogloszenie() { }

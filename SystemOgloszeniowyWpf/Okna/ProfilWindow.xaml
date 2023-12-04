@@ -63,7 +63,7 @@
                 <MenuItem Header="Zaloguj się" x:Name="Zal" Foreground="White" Click="ZalogujSie_Click" />
                 <MenuItem Header="Wyloguj się" x:Name="Wyl" Foreground="White" Click="WylogujSie_Click" />
             </MenuItem>
-            <MenuItem Header="Panel admina" Style="{StaticResource MenuItemBaseStyle}" Margin="0,19,0,0" Foreground="White" x:Name="PanelAdm"  />
+            <MenuItem Header="Panel admina" Style="{StaticResource MenuItemBaseStyle}" Margin="0,19,0,0" Foreground="White" Click="PanelAdmina_Click" x:Name="PanelAdm"  />
         </Menu>
     </Grid>
 </Window>

@@ -42,7 +42,7 @@ namespace SystemOgloszeniowyWpf.Klasy
                 "kategoria_id INTEGER,firma_id INTEGER,tytul TEXT,nazwa_stanowiska TEXT," +
                 "poziom_stanowiska TEXT,rodzaj_pracy TEXT,wymiar_zatrudnienia TEXT,rodzaj_umowy TEXT,najmniejsze_wynagrodzenie DECIMAL(5,2)," +
                 "najwieksze_wynagrodzenie DECIMAL(5,2),dni_pracy TEXT,godziny_pracy TEXT,data_waznosci DATE,obowiazki TEXT," +
-                "wymagania TEXT,benefity TEXT,informacje TEXT,data_utworzenia DATE," +
+                "wymagania TEXT,benefity TEXT,informacje TEXT,data_utworzenia DATE, zdjecie TEXT," +
                 "FOREIGN KEY(kategoria_id) REFERENCES kategorie(kategoria_id),FOREIGN KEY(firma_id) REFERENCES firmy(firma_id));";
                 var createTable = new SqliteCommand(tableCommand, db);
 
@@ -69,7 +69,7 @@ namespace SystemOgloszeniowyWpf.Klasy
             }
         }
 
-        public static List<Ogloszenie> CzytajOgloszenia(int kategoriaId)
+        public static List<Ogloszenie> CzytajOgloszenia(int kategoriaId, int firmaId)
         {
             List<Ogloszenie> ogloszenia = new List<Ogloszenie>();
 
@@ -87,7 +87,7 @@ namespace SystemOgloszeniowyWpf.Klasy
                 {
                     while (reader.Read())
                     {
-                        int id = reader.GetInt32(0);
+                        int ogloszenie = reader.GetInt32(0);
                         int kategoria = reader.GetInt32(1);
                         int firma = reader.GetInt32(2);
                         string tytul = reader.GetString(3);
@@ -105,10 +105,11 @@ namespace SystemOgloszeniowyWpf.Klasy
                         string wymagania = reader.GetString(15);
                         string benefity = reader.GetString(16);
                         string informacje = reader.GetString(17);
-                        DateTime dataUtworzenia = reader.GetDateTime(18);
+                        DateTime dataUtworzenia = reader.GetDateTime(18);  
+                        string zdjecie = reader.GetString(19);
 
-                        Ogloszenie ogl = new Ogloszenie(id, kategoria, firma, tytul, nazwaStanowiska, poziomStanowiska, rodzajPracy, wymiarZatrudnienia, rodzajUmowy, najmniejszeWynagrodzenie, najwiekszeWynagrodzenie,
-                            dniPracy, godzinyPracy, dataWaznosci, obowiazki, wymagania, benefity, informacje, dataUtworzenia);
+                        Ogloszenie ogl = new Ogloszenie(ogloszenie, kategoria, firma, tytul, nazwaStanowiska, poziomStanowiska, rodzajPracy, wymiarZatrudnienia, rodzajUmowy, najmniejszeWynagrodzenie, najwiekszeWynagrodzenie,
+                            dniPracy, godzinyPracy, dataWaznosci, obowiazki, wymagania, benefity, informacje, dataUtworzenia, zdjecie);
 
                         ogloszenia.Add(ogl);
                     }
@@ -135,9 +136,9 @@ namespace SystemOgloszeniowyWpf.Klasy
                 {
                     while (reader.Read())
                     {
-                        int id = reader.GetInt32(0);
+                        int ogloszenie = reader.GetInt32(0);
                         int kategoria = reader.GetInt32(1);
-                        int firma = reader.GetInt32(2);
+                        int firmaId = reader.GetInt32(2);
                         string tytul = reader.GetString(3);
                         string nazwaStanowiska = reader.GetString(4);
                         string poziomStanowiska = reader.GetString(5);
@@ -154,9 +155,10 @@ namespace SystemOgloszeniowyWpf.Klasy
                         string benefity = reader.GetString(16);
                         string informacje = reader.GetString(17);
                         DateTime dataUtworzenia = reader.GetDateTime(18);
+                        string zdjecie = reader.GetString(19);
 
-                        Ogloszenie ogl = new Ogloszenie(id, kategoria, firma, tytul, nazwaStanowiska, poziomStanowiska, rodzajPracy, wymiarZatrudnienia, rodzajUmowy, najmniejszeWynagrodzenie, najwiekszeWynagrodzenie,
-                            dniPracy, godzinyPracy, dataWaznosci, obowiazki, wymagania, benefity, informacje, dataUtworzenia);
+                        Ogloszenie ogl = new Ogloszenie(ogloszenie, kategoria, firmaId, tytul, nazwaStanowiska, poziomStanowiska, rodzajPracy, wymiarZatrudnienia, rodzajUmowy, najmniejszeWynagrodzenie, najwiekszeWynagrodzenie,
+                            dniPracy, godzinyPracy, dataWaznosci, obowiazki, wymagania, benefity, informacje, dataUtworzenia, zdjecie);
 
                         ogloszenia.Add(ogl);
                     }
