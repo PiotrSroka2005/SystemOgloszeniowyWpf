@@ -40,11 +40,7 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
             usermn = user;
             admin = adm;
             logged = log;
-
-            KategoriaComboBox.Text = kategoriaId.ToString();
-
-            FirmaComboBox.Text = firmaId.ToString();
-
+          
 
             _id = ogloszenieId;
             kategorie = Baza.CzytajKategorie();
@@ -156,9 +152,9 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(TxBTytul.Text) && !string.IsNullOrWhiteSpace(TxBNazwaStanowiska.Text) && !string.IsNullOrWhiteSpace(TxBRodzajPracy.Text) && !string.IsNullOrWhiteSpace(TxBWymiarZatrudnienia.Text) &&
-               !string.IsNullOrWhiteSpace(TxBRodzajUmowy.Text) && !string.IsNullOrWhiteSpace(TxBTytul.Text) && !string.IsNullOrWhiteSpace(TxBNajmniejszeWynagrodzenie.Text) && !string.IsNullOrWhiteSpace(TxBNajwiekszeWynagrodzenie.Text) && !string.IsNullOrWhiteSpace(TxBDniPracy.Text) &&
-               !string.IsNullOrWhiteSpace(TxBGodzinyPracy.Text) && !string.IsNullOrWhiteSpace(TxBDataWaznosci.Text) && !string.IsNullOrWhiteSpace(TxBObowiazki.Text) && !string.IsNullOrWhiteSpace(TxBWymagania.Text) && !string.IsNullOrWhiteSpace(TxBBenefity.Text) && !string.IsNullOrWhiteSpace(TxBInformacje.Text) && !string.IsNullOrWhiteSpace(TxBZdjecie.Text))
+            if (!(string.IsNullOrWhiteSpace(TxBTytul.Text) || string.IsNullOrWhiteSpace(TxBNazwaStanowiska.Text) || string.IsNullOrWhiteSpace(TxBRodzajPracy.Text) || string.IsNullOrWhiteSpace(TxBWymiarZatrudnienia.Text) ||
+      string.IsNullOrWhiteSpace(TxBRodzajUmowy.Text) || string.IsNullOrWhiteSpace(TxBTytul.Text) || string.IsNullOrWhiteSpace(TxBNajmniejszeWynagrodzenie.Text) || string.IsNullOrWhiteSpace(TxBNajwiekszeWynagrodzenie.Text) || string.IsNullOrWhiteSpace(TxBDniPracy.Text) ||
+      string.IsNullOrWhiteSpace(TxBGodzinyPracy.Text) || string.IsNullOrWhiteSpace(TxBDataWaznosci.Text) || string.IsNullOrWhiteSpace(TxBObowiazki.Text) || string.IsNullOrWhiteSpace(TxBWymagania.Text) || string.IsNullOrWhiteSpace(TxBBenefity.Text) || string.IsNullOrWhiteSpace(TxBInformacje.Text) || string.IsNullOrWhiteSpace(TxBZdjecie.Text)))
             {
                 if(wybranaKategoria != null)
                 {

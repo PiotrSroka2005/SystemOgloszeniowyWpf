@@ -24,6 +24,7 @@ namespace SystemOgloszeniowyWpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<Kategoria> kategorie;
 
         private int admin = 0;
         private bool logged = false;
@@ -44,6 +45,9 @@ namespace SystemOgloszeniowyWpf
 
             MainViewModel viewModel = new MainViewModel();
             DataContext = viewModel;
+
+            kategorie = Baza.CzytajKategorie();
+            KategoriaComboBox.ItemsSource = kategorie;
 
             // Wczytaj ogłoszenia
             viewModel.Ogloszenia = Baza.CzytajWszystkieOgloszenia();
@@ -80,6 +84,9 @@ namespace SystemOgloszeniowyWpf
 
             Baza.TabelaUzytkownikow();
             Baza.TabelaOgloszenia();
+
+            kategorie = Baza.CzytajKategorie();
+            KategoriaComboBox.ItemsSource = kategorie;
 
             MainViewModel viewModel = new MainViewModel();
             DataContext = viewModel;
@@ -119,6 +126,17 @@ namespace SystemOgloszeniowyWpf
         {
             AdminWindow d = new AdminWindow(admin, logged, usermn);
             d.Show();
+            this.Close();
+        }
+
+        private void Szukaj_Click(object sender, RoutedEventArgs e)
+        {
+            string Szukana = searchBar.Text;
+
+            int WybranaKategoria = KategoriaComboBox.SelectedIndex+1;
+
+            WyszukaneOgloszenia w = new WyszukaneOgloszenia(admin, logged, usermn, Szukana, WybranaKategoria);
+            w.Show();
             this.Close();
         }
     }

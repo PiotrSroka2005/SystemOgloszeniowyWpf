@@ -84,7 +84,7 @@
                 <TextBox x:Name="TxBZdjecie" HorizontalAlignment="Left" FontSize="16" Height="25" VerticalAlignment="Top" Margin="70,570,20,0" Width="200" />
 
                 <Label Content="Firma:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-70,605,0,0" />
-                <ComboBox x:Name="FirmaComboBox" DisplayMemberPath="FirmaNazwa" SelectedValuePath="Id"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,610,20,0" SelectedValue="{Binding FirmaId}" Width="200" Height="25" Text="Kategorie"/>
+                <ComboBox x:Name="FirmaComboBox" DisplayMemberPath="FirmaNazwa" SelectedValuePath="Id"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,610,20,0" SelectedValue="{Binding FirmaId}" Width="200" Height="25" />
 
                 <Label Content="Kategoria:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-70,645,0,0" />
                 <ComboBox x:Name="KategoriaComboBox" DisplayMemberPath="KategoriaNazwa" SelectedValuePath="Id"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,650,20,0" SelectedValue="{Binding KategoriaId}" Width="200" Height="25"/>

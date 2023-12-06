@@ -119,18 +119,14 @@
                     <Border CornerRadius="5" Margin="0,20,0,0" Width="700" Height="200" BorderBrush="#222222" HorizontalAlignment="Center" Padding="25" Background="gray" BorderThickness="2">
                         <StackPanel HorizontalAlignment="Center">
                             <StackPanel  Orientation="Horizontal">
-                                <Label Content="Szukaj stanowisko,słowo kluczowe:" FontSize="15"/>
+                                <Label Content="Szukaj stanowisko, firma, słowo kluczowe:" FontSize="15"/>
                                 <Label Margin="165,0,0,0" Content="Kategoria:" FontSize="15"/>
                             </StackPanel>
                             <StackPanel  Orientation="Horizontal">
                                 <Border CornerRadius="5" BorderBrush="#222222" BorderThickness="2">
                                     <TextBox Width="400" x:Name="searchBar" Height="30" FontSize="20"  TextChanged="TextBox_TextChanged"/>
                                 </Border>
-                                <ComboBox  Width="200">
-                                    <ComboBoxItem Content="Kategoria 1"/>
-                                    <ComboBoxItem Content="Kategoria 2"/>
-                                    <ComboBoxItem Content="Kategoria 3"/>
-                                </ComboBox>
+                                <ComboBox x:Name="KategoriaComboBox" DisplayMemberPath="KategoriaNazwa" SelectedValuePath="Id" Height="35" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top"  SelectedValue="{Binding KategoriaId}" Width="200"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel>
@@ -165,7 +161,7 @@
                                 </StackPanel>
                                 <StackPanel Margin="40,40,0,0">
                                     <Border CornerRadius="5" BorderBrush="White">
-                                        <Button Content="Szukaj" Height="40" Width="100" x:Name="Szukaj" Style="{StaticResource CustomButton}"/>
+                                        <Button Content="Szukaj" Height="40" Width="100" x:Name="Szukaj" Click="Szukaj_Click" Style="{StaticResource CustomButton}"/>
                                     </Border>
                                 </StackPanel>
                             </StackPanel>
