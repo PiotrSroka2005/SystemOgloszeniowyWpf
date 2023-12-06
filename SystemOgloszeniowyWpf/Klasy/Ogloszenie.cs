@@ -37,7 +37,7 @@ namespace SystemOgloszeniowyWpf.Klasy
 
         public string GodzinyPracy { get; set; }
 
-        public DateTime DataWaznosci {  get; set; }
+        public DateTime? DataWaznosci {  get; set; }
 
         public string Obowiazki {  get; set; }
 
@@ -52,7 +52,7 @@ namespace SystemOgloszeniowyWpf.Klasy
         public string Zdjecie { get; set; }
 
         public Ogloszenie(int ogloszenieId, int kategoriaId, int firmaId, string tytul, string nazwaStanowiska, string poziomStanowiska, string rodzajPracy, string wymiarZatrudnienia, string rodzajUmowy, decimal? najmniejszeWynagrodzenie,
-        decimal? najwiekszeWynagrodzenie, string dniPracy, string godzinyPracy, DateTime dataWaznosci, string obowiazki, string wymagania, string benefity, string informacje, DateTime dataUtworzenia, string zdjecie)
+        decimal? najwiekszeWynagrodzenie, string dniPracy, string godzinyPracy, DateTime? dataWaznosci, string obowiazki, string wymagania, string benefity, string informacje, DateTime dataUtworzenia, string zdjecie)
         {
             OgloszenieId = ogloszenieId;
             KategoriaId = kategoriaId;

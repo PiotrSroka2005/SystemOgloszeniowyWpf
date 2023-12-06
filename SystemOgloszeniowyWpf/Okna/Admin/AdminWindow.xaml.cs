@@ -44,12 +44,16 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
 
         private void ZarzadzajKategoriami(object sender, RoutedEventArgs e)
         {
-
+            ZarzadzanieKategoria d = new ZarzadzanieKategoria(admin, logged, usermn);
+            d.Show();
+            this.Close();
         }
 
         private void ZarzadzajFirmami(object sender, RoutedEventArgs e)
         {
-
+            ZarzadzanieFirma d = new ZarzadzanieFirma(admin, logged, usermn);
+            d.Show();
+            this.Close();
         }
 
         private void ZarzadzajOgloszeniami(object sender, RoutedEventArgs e)

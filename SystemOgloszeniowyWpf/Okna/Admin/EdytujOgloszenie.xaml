@@ -1,11 +1,11 @@
-﻿<Window x:Class="SystemOgloszeniowyWpf.Okna.Admin.DodajOgloszenie"
+﻿<Window x:Class="SystemOgloszeniowyWpf.Okna.Admin.EdytujOgloszenie"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemOgloszeniowyWpf.Okna.Admin"
         mc:Ignorable="d"
-        Title="DodajOgloszenie" Height="610" Width="1000"
+        Title="EdytujOgloszenie" Height="610" Width="1000"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -33,7 +33,7 @@
     </Window.Resources>
 
     <ScrollViewer>
-    <Border CornerRadius="5" Margin="0,0,0,0" Width="480" Height="840" BorderBrush="#222222" HorizontalAlignment="Center" Background="gray" BorderThickness="2">
+        <Border CornerRadius="5" Margin="0,0,0,0" Width="480" Height="840" BorderBrush="#222222" HorizontalAlignment="Center" Background="gray" BorderThickness="2">
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Label Content="Tytul:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-70,-35,0,0" />
                 <TextBox x:Name="TxBTytul" HorizontalAlignment="Left" FontSize="16" Height="25" VerticalAlignment="Top" Margin="70,-30,20,0" Width="200" />
@@ -84,15 +84,16 @@
                 <TextBox x:Name="TxBZdjecie" HorizontalAlignment="Left" FontSize="16" Height="25" VerticalAlignment="Top" Margin="70,570,20,0" Width="200" />
 
                 <Label Content="Firma:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-70,605,0,0" />
-                <ComboBox x:Name="FirmaComboBox" DisplayMemberPath="FirmaNazwa" SelectedValuePath="FirmaId"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,610,20,0" SelectedValue="{Binding FirmaId}" Width="200" Height="25" Text="Kategorie"/>
+                <ComboBox x:Name="FirmaComboBox" DisplayMemberPath="FirmaNazwa" SelectedValuePath="Id"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,610,20,0" SelectedValue="{Binding FirmaId}" Width="200" Height="25" Text="Kategorie"/>
 
                 <Label Content="Kategoria:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-70,645,0,0" />
-                <ComboBox x:Name="KategoriaComboBox" DisplayMemberPath="KategoriaNazwa" SelectedValuePath="Id"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,650,20,0" SelectedValue="{Binding KategoriaId}" Width="200" Height="25" Text="Kategorie"/>
+                <ComboBox x:Name="KategoriaComboBox" DisplayMemberPath="KategoriaNazwa" SelectedValuePath="Id"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,650,20,0" SelectedValue="{Binding KategoriaId}" Width="200" Height="25"/>
 
-                <Button x:Name="Dodaj" Style="{StaticResource CustomButton}" Click="Dodaj_Click" Content="Dodaj" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,685,0,0"  />
+                <Button x:Name="Edytuj" Style="{StaticResource CustomButton}" Click="Edytuj_Click" Content="Edytuj" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,685,0,0"  />
 
                 <Button  Content="Zarządzaj ogłoszeniami" Style="{StaticResource CustomButton}" HorizontalAlignment="Center" Click="ZarzadzajOgloszeniami" VerticalAlignment="Top" Margin="10,720,0,0"   />
             </Grid>
         </Border>
     </ScrollViewer>
+
 </Window>
