@@ -124,7 +124,7 @@
                             </StackPanel>
                             <StackPanel  Orientation="Horizontal">
                                 <Border CornerRadius="5" BorderBrush="#222222" BorderThickness="2">
-                                    <TextBox Width="400" x:Name="searchBar" Height="30" FontSize="20"  TextChanged="TextBox_TextChanged"/>
+                                    <TextBox Width="400" x:Name="searchBar" Height="30" FontSize="20"/>
                                 </Border>
                                 <ComboBox x:Name="KategoriaComboBox" DisplayMemberPath="KategoriaNazwa" SelectedValuePath="Id" Height="35" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top"  SelectedValue="{Binding KategoriaId}" Width="200"/>
                             </StackPanel>
@@ -171,7 +171,7 @@
                 <StackPanel Margin="0,10,0,0">
                     <Label Content="Najnowsze oferty" HorizontalAlignment="Center" FontSize="25"/>
                 </StackPanel>
-                <ItemsControl ItemsSource="{Binding Path=Ogloszenia, UpdateSourceTrigger=PropertyChanged}" x:Name="test">
+                <ItemsControl ItemsSource="{Binding Path=Ogloszenia, UpdateSourceTrigger=PropertyChanged}" x:Name="OgloszenieWidok">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="3" MaxWidth="1300"/>
@@ -179,7 +179,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource CustomoweOgloszenie}">
+                            <Button Style="{StaticResource CustomoweOgloszenie}" Click="Szczegoly_Click">
                                 <StackPanel Margin="-30,0,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Foreground="White" Margin="0,10,0,0" Text="{Binding NazwaStanowiska}"/>

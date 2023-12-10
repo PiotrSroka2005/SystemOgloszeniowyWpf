@@ -159,8 +159,8 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
             
             TxBZdjecie.Text = string.Empty;
 
-            KategoriaComboBox.SelectedIndex = 0;
-            FirmaComboBox.SelectedIndex = 0;
+            KategoriaComboBox.SelectedIndex = 1;
+            FirmaComboBox.SelectedIndex = 1;
         }
     }
 }

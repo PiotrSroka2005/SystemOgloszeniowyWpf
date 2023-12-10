@@ -187,6 +187,57 @@ namespace SystemOgloszeniowyWpf.Klasy
             return ogloszenia;
         }
 
+        public static List<Ogloszenie> CzytajOgloszeniaSzczegoly(int IdWybranego)
+        {
+            List<Ogloszenie> ogloszenia = new List<Ogloszenie>();
+
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                var selectCommand = new SqliteCommand();
+                selectCommand.Connection = db;
+                selectCommand.CommandText = "SELECT * FROM ogloszenia WHERE ogloszenie_id = @IdWybranego";
+                selectCommand.Parameters.AddWithValue("@IdWybranego", IdWybranego);
+                using (SqliteDataReader reader = selectCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int ogloszenie = reader.GetInt32(0);
+                        int kategoria = reader.GetInt32(1);
+                        int firma = reader.GetInt32(2);
+                        string tytul = reader.GetString(3);
+                        string nazwaStanowiska = reader.GetString(4);
+                        string poziomStanowiska = reader.GetString(5);
+                        string rodzajPracy = reader.GetString(6);
+                        string wymiarZatrudnienia = reader.GetString(7);
+                        string rodzajUmowy = reader.GetString(8);
+                        decimal? najmniejszeWynagrodzenie = reader.GetDecimal(9);
+                        decimal? najwiekszeWynagrodzenie = reader.GetDecimal(10);
+                        string dniPracy = reader.GetString(11);
+                        string godzinyPracy = reader.GetString(12);
+                        DateTime dataWaznosci = reader.GetDateTime(13);
+                        string obowiazki = reader.GetString(14);
+                        string wymagania = reader.GetString(15);
+                        string benefity = reader.GetString(16);
+                        string informacje = reader.GetString(17);
+                        DateTime dataUtworzenia = reader.GetDateTime(18);
+                        string zdjecie = reader.GetString(19);
+
+                        Ogloszenie ogl = new Ogloszenie(ogloszenie, kategoria, firma, tytul, nazwaStanowiska, poziomStanowiska, rodzajPracy, wymiarZatrudnienia, rodzajUmowy, najmniejszeWynagrodzenie, najwiekszeWynagrodzenie,
+                            dniPracy, godzinyPracy, dataWaznosci, obowiazki, wymagania, benefity, informacje, dataUtworzenia, zdjecie);
+
+                        ogloszenia.Add(ogl);
+                    }
+                }
+            }
+
+            return ogloszenia;
+        }
+
+
         public static List<Ogloszenie> CzytajWszystkieOgloszenia()
         {
             List<Ogloszenie> ogloszenia = new List<Ogloszenie>();
@@ -237,7 +288,7 @@ namespace SystemOgloszeniowyWpf.Klasy
         }
 
 
-        public static List<Ogloszenie> CzytajWyszukaneOgloszenia(string szukana, int wybranaKategoria)
+        public static List<Ogloszenie> CzytajWyszukaneOgloszeniaKategoria(int wybranaKategoria)
         {
             List<Ogloszenie> ogloszenia = new List<Ogloszenie>();
 
@@ -249,15 +300,119 @@ namespace SystemOgloszeniowyWpf.Klasy
 
                 var selectCommand = new SqliteCommand();
                 selectCommand.Connection = db;                
+                selectCommand.CommandText = "SELECT * FROM ogloszenia WHERE kategoria_id = @wybranaKategoria ORDER BY data_utworzenia DESC;";
+                
+                selectCommand.Parameters.AddWithValue("@wybranaKategoria", wybranaKategoria);
+                using (SqliteDataReader reader = selectCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int ogloszenie = reader.GetInt32(0);
+                        int kategoria = reader.GetInt32(1);
+                        int firmaId = reader.GetInt32(2);
+                        string tytul = reader.GetString(3);
+                        string nazwaStanowiska = reader.GetString(4);
+                        string poziomStanowiska = reader.GetString(5);
+                        string rodzajPracy = reader.GetString(6);
+                        string wymiarZatrudnienia = reader.GetString(7);
+                        string rodzajUmowy = reader.GetString(8);
+                        decimal? najmniejszeWynagrodzenie = reader.GetDecimal(9);
+                        decimal? najwiekszeWynagrodzenie = reader.GetDecimal(10);
+                        string dniPracy = reader.GetString(11);
+                        string godzinyPracy = reader.GetString(12);
+                        DateTime dataWaznosci = reader.GetDateTime(13);
+                        string obowiazki = reader.GetString(14);
+                        string wymagania = reader.GetString(15);
+                        string benefity = reader.GetString(16);
+                        string informacje = reader.GetString(17);
+                        DateTime dataUtworzenia = reader.GetDateTime(18);
+                        string zdjecie = reader.GetString(19);
+
+                        Ogloszenie ogl = new Ogloszenie(ogloszenie, kategoria, firmaId, tytul, nazwaStanowiska, poziomStanowiska, rodzajPracy, wymiarZatrudnienia, rodzajUmowy, najmniejszeWynagrodzenie, najwiekszeWynagrodzenie,
+                            dniPracy, godzinyPracy, dataWaznosci, obowiazki, wymagania, benefity, informacje, dataUtworzenia, zdjecie);
+
+                        ogloszenia.Add(ogl);
+                    }
+                }
+            }
+
+            return ogloszenia;
+        }
+       
+        public static List<Ogloszenie> CzytajWyszukaneOgloszenia(string szukana, int wybranaKategoria)
+        {
+            List<Ogloszenie> ogloszenia = new List<Ogloszenie>();
+
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                var selectCommand = new SqliteCommand();
+                selectCommand.Connection = db;
                 selectCommand.CommandText = "SELECT * FROM ogloszenia " +
-                                           "WHERE (@szukana IS NULL OR tytul LIKE @szukana " +
-                                           "OR nazwa_stanowiska LIKE @szukana " +
-                                           "OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE @szukana)) " +
-                                           "AND (kategoria_id = @wybranaKategoria) " +
-                                           "ORDER BY data_utworzenia DESC";
+                                   "WHERE (@szukana IS NULL OR tytul LIKE @szukana " +
+                                   "OR nazwa_stanowiska LIKE @szukana " +
+                                   "OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE @szukana)) " +
+                                   "AND (@wybranaKategoria <= 0 OR kategoria_id = @wybranaKategoria) " +
+                                   "AND ((@szukana IS NOT NULL AND @wybranaKategoria <= 0) " +
+                                   "OR (tytul LIKE @szukana OR nazwa_stanowiska LIKE @szukana OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE @szukana) AND kategoria_id = @wybranaKategoria)) " +
+                                   "ORDER BY data_utworzenia DESC";
 
                 selectCommand.Parameters.AddWithValue("@szukana", szukana != null ? $"%{szukana}%" : (object)DBNull.Value);
                 selectCommand.Parameters.AddWithValue("@wybranaKategoria", wybranaKategoria);
+                using (SqliteDataReader reader = selectCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int ogloszenie = reader.GetInt32(0);
+                        int kategoria = reader.GetInt32(1);
+                        int firmaId = reader.GetInt32(2);
+                        string tytul = reader.GetString(3);
+                        string nazwaStanowiska = reader.GetString(4);
+                        string poziomStanowiska = reader.GetString(5);
+                        string rodzajPracy = reader.GetString(6);
+                        string wymiarZatrudnienia = reader.GetString(7);
+                        string rodzajUmowy = reader.GetString(8);
+                        decimal? najmniejszeWynagrodzenie = reader.GetDecimal(9);
+                        decimal? najwiekszeWynagrodzenie = reader.GetDecimal(10);
+                        string dniPracy = reader.GetString(11);
+                        string godzinyPracy = reader.GetString(12);
+                        DateTime dataWaznosci = reader.GetDateTime(13);
+                        string obowiazki = reader.GetString(14);
+                        string wymagania = reader.GetString(15);
+                        string benefity = reader.GetString(16);
+                        string informacje = reader.GetString(17);
+                        DateTime dataUtworzenia = reader.GetDateTime(18);
+                        string zdjecie = reader.GetString(19);
+
+                        Ogloszenie ogl = new Ogloszenie(ogloszenie, kategoria, firmaId, tytul, nazwaStanowiska, poziomStanowiska, rodzajPracy, wymiarZatrudnienia, rodzajUmowy, najmniejszeWynagrodzenie, najwiekszeWynagrodzenie,
+                            dniPracy, godzinyPracy, dataWaznosci, obowiazki, wymagania, benefity, informacje, dataUtworzenia, zdjecie);
+
+                        ogloszenia.Add(ogl);
+                    }
+                }
+            }
+
+            return ogloszenia;
+        }
+
+        public static List<Ogloszenie> CzytajWyszukaneOgloszeniaSzukana(string szukana)
+        {
+            List<Ogloszenie> ogloszenia = new List<Ogloszenie>();
+
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                var selectCommand = new SqliteCommand();
+                selectCommand.Connection = db;
+                selectCommand.CommandText = "SELECT * FROM ogloszenia WHERE (@szukana IS NULL OR (tytul LIKE '%' || @szukana || '%' OR nazwa_stanowiska LIKE '%' || @szukana || '%' OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE '%' || @szukana || '%') OR instr(tytul, @szukana) > 0 OR instr(nazwa_stanowiska, @szukana) > 0 OR firma_id IN (SELECT firma_id FROM firmy WHERE instr(nazwa, @szukana) > 0))) ORDER BY CASE WHEN @szukana IS NOT NULL THEN 1 ELSE 0 END, data_utworzenia DESC;";
+
+                selectCommand.Parameters.AddWithValue("@szukana", szukana != null ? $"%{szukana}%" : (object)DBNull.Value);                
                 using (SqliteDataReader reader = selectCommand.ExecuteReader())
                 {
                     while (reader.Read())

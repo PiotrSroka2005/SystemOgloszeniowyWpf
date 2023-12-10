@@ -29,7 +29,7 @@ namespace SystemOgloszeniowyWpf.Okna
         private string szukana = "";
         private int wybranaKategoria = 0;
 
-        public WyszukaneOgloszenia(string Szukana, int WybranaKategoria)
+        public WyszukaneOgloszenia(string Szukana)
         {
             InitializeComponent();
            
@@ -44,18 +44,46 @@ namespace SystemOgloszeniowyWpf.Okna
             DataContext = viewModel;
 
             kategorie = Baza.CzytajKategorie();
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
             KategoriaComboBox.ItemsSource = kategorie;
 
             // Wczytaj ogłoszenia            
 
             szukana = Szukana;
+            
+
+            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszeniaSzukana(szukana);
+        }
+
+        public WyszukaneOgloszenia(int WybranaKategoria)
+        {
+            InitializeComponent();
+
+            Baza.TabelaOgloszenia();
+
+            uzytkownik.Visibility = Visibility.Collapsed;
+            PanelAdm.Visibility = Visibility.Collapsed;
+            Wyl.Visibility = Visibility.Collapsed;
+            profil.Visibility = Visibility.Collapsed;
+
+            MainViewModel viewModel = new MainViewModel();
+            DataContext = viewModel;
+
+            kategorie = Baza.CzytajKategorie();
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
+            KategoriaComboBox.ItemsSource = kategorie;
+
+            // Wczytaj ogłoszenia            
+         
 
             wybranaKategoria = WybranaKategoria;
 
-            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszenia(szukana, wybranaKategoria);
+            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszeniaKategoria(wybranaKategoria);
         }
 
-        public WyszukaneOgloszenia(int adm, bool log, string user, string Szukana, int WybranaKategoria)
+        public WyszukaneOgloszenia(int adm, bool log, string user, string Szukana)
         {
             InitializeComponent();
 
@@ -90,18 +118,141 @@ namespace SystemOgloszeniowyWpf.Okna
             DataContext = viewModel;
 
             kategorie = Baza.CzytajKategorie();
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
             KategoriaComboBox.ItemsSource = kategorie;
 
             szukana = Szukana;
+            
+
+            // Wczytaj ogłoszenia
+            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszeniaSzukana(szukana);
+            
+        }
+
+        public WyszukaneOgloszenia(int adm, bool log, string user, int WybranaKategoria)
+        {
+            InitializeComponent();
+
+            PanelAdm.Visibility = Visibility.Collapsed;
+            usermn = user;
+            admin = adm;
+            logged = log;
+
+            if (logged == false)
+            {
+                Wyl.Visibility = Visibility.Collapsed;
+                uzytkownik.Visibility = Visibility.Collapsed;
+                profil.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                uzytkownik.Header = user;
+                Zal.Visibility = Visibility.Collapsed;
+                if (admin == 1)
+                {
+                    PanelAdm.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    PanelAdm.Visibility = Visibility.Collapsed;
+                }
+            }
+
+            Baza.TabelaOgloszenia();
+
+            MainViewModel viewModel = new MainViewModel();
+            DataContext = viewModel;
+
+            kategorie = Baza.CzytajKategorie();
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
+            KategoriaComboBox.ItemsSource = kategorie;
+            
 
             wybranaKategoria = WybranaKategoria;
 
             // Wczytaj ogłoszenia
-            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszenia(szukana, wybranaKategoria);
-            
+            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszeniaKategoria(wybranaKategoria);
+
         }
 
-        
+        public WyszukaneOgloszenia(int adm, bool log, string user,string Szukana, int WybranaKategoria)
+        {
+            InitializeComponent();
+
+            PanelAdm.Visibility = Visibility.Collapsed;
+            usermn = user;
+            admin = adm;
+            logged = log;
+
+            if (logged == false)
+            {
+                Wyl.Visibility = Visibility.Collapsed;
+                uzytkownik.Visibility = Visibility.Collapsed;
+                profil.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                uzytkownik.Header = user;
+                Zal.Visibility = Visibility.Collapsed;
+                if (admin == 1)
+                {
+                    PanelAdm.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    PanelAdm.Visibility = Visibility.Collapsed;
+                }
+            }
+
+            Baza.TabelaOgloszenia();
+
+            MainViewModel viewModel = new MainViewModel();
+            DataContext = viewModel;
+
+            kategorie = Baza.CzytajKategorie();
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
+            KategoriaComboBox.ItemsSource = kategorie;
+
+            szukana = Szukana;  
+            wybranaKategoria = WybranaKategoria;
+
+            // Wczytaj ogłoszenia
+            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszenia(szukana, wybranaKategoria);
+
+        }
+
+        public WyszukaneOgloszenia(string Szukana, int WybranaKategoria)
+        {
+            InitializeComponent();
+
+            Baza.TabelaOgloszenia();
+
+            uzytkownik.Visibility = Visibility.Collapsed;
+            PanelAdm.Visibility = Visibility.Collapsed;
+            Wyl.Visibility = Visibility.Collapsed;
+            profil.Visibility = Visibility.Collapsed;
+
+            MainViewModel viewModel = new MainViewModel();
+            DataContext = viewModel;
+
+            kategorie = Baza.CzytajKategorie();
+
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
+            KategoriaComboBox.ItemsSource = kategorie;
+
+            // Wczytaj ogłoszenia            
+
+            szukana = Szukana;
+            wybranaKategoria = WybranaKategoria;
+
+            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszenia(szukana, wybranaKategoria);
+        }
+
+
         private void Profil_Click(object sender, RoutedEventArgs e)
         {
             ProfilWindow p = new ProfilWindow(admin, logged, usermn);
@@ -139,15 +290,32 @@ namespace SystemOgloszeniowyWpf.Okna
 
         private void Szukaj_Click(object sender, RoutedEventArgs e)
         {
-           string szukanaLokalna = searchBar.Text;
-
-           int LokalnaWybranaKategoria = KategoriaComboBox.SelectedIndex+1;
+            string Szukana = searchBar.Text;
 
             MainViewModel viewModel = new MainViewModel();
             DataContext = viewModel;
 
-            viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszenia(szukanaLokalna, LokalnaWybranaKategoria);
+            if (KategoriaComboBox.SelectedIndex != -1 && KategoriaComboBox.SelectedIndex != 0)
+            {
+                var zaznaczonaKategoria = KategoriaComboBox.SelectedItem as Kategoria;
+                if (zaznaczonaKategoria != null)
+                {
+                    int zaznaczonaKategoriaId = zaznaczonaKategoria.KategoriaId;
+                    if (searchBar.Text == "")
+                    {
+                        viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszeniaKategoria(zaznaczonaKategoriaId);
+                    }
+                    else
+                    {
+                        viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszenia(Szukana, zaznaczonaKategoriaId);
+                    }
 
+                }
+            }
+            else
+            {
+                viewModel.Ogloszenia = Baza.CzytajWyszukaneOgloszeniaSzukana(Szukana);
+            }
         }
     }
 }

@@ -24,7 +24,9 @@ namespace SystemOgloszeniowyWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Kategoria> kategorie;
+        private List<Kategoria> kategorie;        
+        
+        
 
         private int admin = 0;
         private bool logged = false;
@@ -45,12 +47,18 @@ namespace SystemOgloszeniowyWpf
 
             MainViewModel viewModel = new MainViewModel();
             DataContext = viewModel;
-
+            
             kategorie = Baza.CzytajKategorie();
+
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
+
             KategoriaComboBox.ItemsSource = kategorie;
 
             // Wczytaj ogłoszenia
             viewModel.Ogloszenia = Baza.CzytajWszystkieOgloszenia();
+
+            
         }
 
         public MainWindow(int adm, bool log, string user)
@@ -86,6 +94,9 @@ namespace SystemOgloszeniowyWpf
             Baza.TabelaOgloszenia();
 
             kategorie = Baza.CzytajKategorie();
+            Kategoria specjalnaKategoria = new Kategoria { KategoriaId = 0, KategoriaNazwa = "Wybierz kategorie:" };
+            kategorie.Insert(0, specjalnaKategoria);
+
             KategoriaComboBox.ItemsSource = kategorie;
 
             MainViewModel viewModel = new MainViewModel();
@@ -93,13 +104,7 @@ namespace SystemOgloszeniowyWpf
 
             // Wczytaj ogłoszenia
             viewModel.Ogloszenia = Baza.CzytajWszystkieOgloszenia();
-        }
-        
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        }              
 
         private void Profil_Click(object sender, RoutedEventArgs e)
         {
@@ -129,15 +134,58 @@ namespace SystemOgloszeniowyWpf
             this.Close();
         }
 
+        
+
         private void Szukaj_Click(object sender, RoutedEventArgs e)
         {
             string Szukana = searchBar.Text;
 
-            int WybranaKategoria = KategoriaComboBox.SelectedIndex+1;
+            if(KategoriaComboBox.SelectedIndex != -1 && KategoriaComboBox.SelectedIndex !=0)
+            {
+                var zaznaczonaKategoria = KategoriaComboBox.SelectedItem as Kategoria;
+                if (zaznaczonaKategoria != null)
+                {
+                    int zaznaczonaKategoriaId = zaznaczonaKategoria.KategoriaId;
+                    if (searchBar.Text == "")
+                    {                        
+                        WyszukaneOgloszenia w = new WyszukaneOgloszenia(admin, logged, usermn, zaznaczonaKategoriaId);
+                        w.Show();
+                        this.Close();
+                    }
+                    else
+                    {
+                        WyszukaneOgloszenia w = new WyszukaneOgloszenia(admin, logged, usermn,Szukana, zaznaczonaKategoriaId);
+                        w.Show();
+                        this.Close();
+                    }
+                    
+                }
+            }
+            else
+            {
+                WyszukaneOgloszenia z = new WyszukaneOgloszenia(admin, logged, usermn, Szukana);
+                z.Show();
+                this.Close();
+            }
+                                                     
+        }
 
-            WyszukaneOgloszenia w = new WyszukaneOgloszenia(admin, logged, usermn, Szukana, WybranaKategoria);
-            w.Show();
-            this.Close();
+        private void Szczegoly_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            // Pobierz DataContext z przycisku, który zawiera obiekt Ogloszenie
+            Ogloszenie ogloszenie = button?.DataContext as Ogloszenie;
+
+            // Sprawdź, czy obiekt Ogloszenie i Id są dostępne
+            if (ogloszenie != null)
+            {
+                int idOgloszenia = ogloszenie.OgloszenieId;
+
+                // Tutaj możesz użyć idOgloszenia, na przykład, przekazać do nowego okna
+                SzczegolyOgloszenia szczegolyWindow = new SzczegolyOgloszenia(admin, logged, usermn, idOgloszenia);
+                szczegolyWindow.Show();
+            }
         }
     }
 }
