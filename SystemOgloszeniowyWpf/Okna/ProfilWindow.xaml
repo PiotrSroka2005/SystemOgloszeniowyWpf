@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemOgloszeniowyWpf"
         mc:Ignorable="d"
-        Title="Profil" Height="610" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        Title="Profil" Height="810" Width="1400"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="750" MinWidth="1200">
 
     <Window.Resources>
         <Style x:Key="MenuItemBaseStyle" TargetType="{x:Type MenuItem}">

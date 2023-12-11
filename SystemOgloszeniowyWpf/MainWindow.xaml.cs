@@ -174,17 +174,18 @@ namespace SystemOgloszeniowyWpf
         {
             Button button = sender as Button;
 
-            // Pobierz DataContext z przycisku, który zawiera obiekt Ogloszenie
+           
             Ogloszenie ogloszenie = button?.DataContext as Ogloszenie;
 
-            // Sprawdź, czy obiekt Ogloszenie i Id są dostępne
+           
             if (ogloszenie != null)
             {
                 int idOgloszenia = ogloszenie.OgloszenieId;
 
-                // Tutaj możesz użyć idOgloszenia, na przykład, przekazać do nowego okna
+               
                 SzczegolyOgloszenia szczegolyWindow = new SzczegolyOgloszenia(admin, logged, usermn, idOgloszenia);
                 szczegolyWindow.Show();
+                this.Close();
             }
         }
     }

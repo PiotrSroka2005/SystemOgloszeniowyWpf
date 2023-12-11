@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\czasPracy.png" />
     <None Remove="Images\logo-MoonWork.png" />
+    <None Remove="Images\miejscePracy.png" />
+    <None Remove="Images\stanowisko.png" />
+    <None Remove="Images\umowa.png" />
+    <None Remove="Images\waznosc.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\czasPracy.png" />
     <Resource Include="Images\logo-MoonWork.png" />
+    <Resource Include="Images\miejscePracy.png" />
+    <Resource Include="Images\stanowisko.png" />
+    <Resource Include="Images\umowa.png" />
+    <Resource Include="Images\waznosc.png" />
   </ItemGroup>
 
 </Project>

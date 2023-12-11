@@ -288,6 +288,25 @@ namespace SystemOgloszeniowyWpf.Okna
             this.Close();
         }
 
+        private void Szczegoly_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+
+            Ogloszenie ogloszenie = button?.DataContext as Ogloszenie;
+
+
+            if (ogloszenie != null)
+            {
+                int idOgloszenia = ogloszenie.OgloszenieId;
+
+
+                SzczegolyOgloszenia szczegolyWindow = new SzczegolyOgloszenia(admin, logged, usermn, idOgloszenia);
+                szczegolyWindow.Show();
+                this.Close();
+            }
+        }
+
         private void Szukaj_Click(object sender, RoutedEventArgs e)
         {
             string Szukana = searchBar.Text;

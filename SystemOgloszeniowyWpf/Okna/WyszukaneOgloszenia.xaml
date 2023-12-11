@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemOgloszeniowyWpf.Okna"
         mc:Ignorable="d"
-        Title="WyszukaneOgloszenia" Height="610" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        Title="WyszukaneOgloszenia" Height="810" Width="1400"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="750" MinWidth="1200">
 
     <Window.Resources>
         <Style x:Key="MenuItemBaseStyle" TargetType="{x:Type MenuItem}">
@@ -68,7 +69,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border  BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="5,5,0,0" CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -109,30 +110,30 @@
         <ScrollViewer Grid.Row="2">
             <StackPanel>
                 <StackPanel>
-                    <Border CornerRadius="5" Margin="0,20,0,0" Width="900" Height="130" BorderBrush="#222222" HorizontalAlignment="Center" Padding="25" Background="gray" BorderThickness="2">
+                    <Border CornerRadius="5" Margin="0,20,0,0" Width="1100" Height="130" BorderBrush="#222222" HorizontalAlignment="Center" Padding="20" Background="gray" BorderThickness="2">
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                             <StackPanel>
                                 <StackPanel  Orientation="Horizontal">
-                                    <Label Content="Szukaj stanowisko, firma, słowo kluczowe:" FontSize="15"/>
-                                    <Label Margin="165,0,0,0" Content="Kategoria:" FontSize="15"/>
+                                    <Label Content="Szukaj stanowisko, tytuł, firma:" FontSize="17"/>
+                                    <Label Margin="365,0,0,0" Content="Kategoria:" FontSize="17"/>
                                 </StackPanel>
                                 <StackPanel  Orientation="Horizontal">
                                     <Border CornerRadius="5" BorderBrush="#222222" BorderThickness="2">
-                                        <TextBox Width="400" x:Name="searchBar" Height="30" FontSize="20" />
+                                        <TextBox Width="600" x:Name="searchBar" Height="30" FontSize="20" />
                                     </Border>
-                                    <ComboBox x:Name="KategoriaComboBox" DisplayMemberPath="KategoriaNazwa" SelectedValuePath="Id" Height="35" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top"  SelectedValue="{Binding KategoriaId}" Width="200"/>
+                                    <ComboBox x:Name="KategoriaComboBox" DisplayMemberPath="KategoriaNazwa" SelectedValuePath="Id" Height="35" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top"  SelectedValue="{Binding KategoriaId}" Width="300"/>
                                 </StackPanel>
                             </StackPanel>
-                            <Border CornerRadius="5" Margin="10,20,0,0" BorderBrush="White">
-                                <Button Content="Szukaj" Height="40" Width="100" x:Name="Szukaj" Click="Szukaj_Click" Style="{StaticResource CustomButton}"/>
+                            <Border CornerRadius="5" Margin="10,15,0,0" BorderBrush="White">
+                                <Button Content="Szukaj" Height="50" Width="125" FontSize="16" x:Name="Szukaj" Click="Szukaj_Click" Style="{StaticResource CustomButton}"/>
                             </Border>
                         </StackPanel>
                     </Border>
                 </StackPanel>
                 <StackPanel Margin="0,10,0,0">
-                    <Label Content="Wyszukane oferty" HorizontalAlignment="Center" FontSize="25"/>
+                    <Label Content="Wyszukane oferty" HorizontalAlignment="Center" FontSize="35"/>
                 </StackPanel>
-                <ItemsControl ItemsSource="{Binding Path=Ogloszenia, UpdateSourceTrigger=PropertyChanged}" x:Name="test">
+                <ItemsControl ItemsSource="{Binding Path=Ogloszenia, UpdateSourceTrigger=PropertyChanged}" x:Name="OgloszenieWidok">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="1" MaxWidth="1300"/>
@@ -140,15 +141,11 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource CustomoweOgloszenie}">
-                                <StackPanel Margin="-400,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Foreground="White" Margin="0,10,0,0" Text="{Binding NazwaStanowiska}"/>
-                                        <TextBlock Foreground="White" Margin="0,10,0,0" Text="-" />
-                                        <TextBlock Foreground="White" Margin="0,10,0,0" Text="{Binding PoziomStanowiska}" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="{Binding Zdjecie}" Width="100"  Height="100"/>
+                            <Button Style="{StaticResource CustomoweOgloszenie}" Click="Szczegoly_Click">
+                                <StackPanel Margin="20,0,0,0">
+                                    <TextBlock Foreground="White" Margin="0,10,0,0" FontSize="15" Text="{Binding Tytul}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                        <Image Source="{Binding Zdjecie}" HorizontalAlignment="Left" Width="100" Height="100"/>
                                         <TextBlock Text="{Binding NazwaFirmy}" Foreground="White"  FontSize="15" Margin="10,0,0,0" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <TextBlock Foreground="White" Margin="0,0,0,10" Text="{Binding DataUtworzenia, StringFormat={}{0:dd.MM.yyyy}}"/>

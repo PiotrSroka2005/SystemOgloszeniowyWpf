@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemOgloszeniowyWpf.Okna.Admin"
         mc:Ignorable="d"
-        Title="AdminWindow" Height="610" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        Title="AdminWindow" Height="810" Width="1400"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="750" MinWidth="1200">
 
     <Window.Resources>
         <Style TargetType="Button" x:Key="CustomButton">
@@ -31,7 +32,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <StackPanel>
+    <StackPanel VerticalAlignment="Center">
         <Label Content="Panel admina" HorizontalAlignment="Center" FontSize="45" Margin="0,50,0,20"/>
         <Border CornerRadius="5" Margin="0,0,0,0" Width="380" Height="300" BorderBrush="#222222" HorizontalAlignment="Center" Padding="25" Background="gray" BorderThickness="2">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

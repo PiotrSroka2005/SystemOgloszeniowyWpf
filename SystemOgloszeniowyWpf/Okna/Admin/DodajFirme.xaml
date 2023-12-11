@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemOgloszeniowyWpf.Okna.Admin"
         mc:Ignorable="d"
-        Title="DodajFirme" Height="610" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        Title="DodajFirme" Height="810" Width="1400"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="750" MinWidth="1200">
 
     <Window.Resources>
         <Style TargetType="Button" x:Key="CustomButton">
