@@ -167,8 +167,18 @@
                                         </StackPanel>
 
                                         <StackPanel Margin="240,0,0,0">
-                                            <StackPanel Width="35" Height="35">
-                                                
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border BorderBrush="Cyan" BorderThickness="2" Background="White" CornerRadius="5">
+                                                    <StackPanel Height="35" Width="35">
+                                                        <Image Source="../Images/money.png"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Foreground="White" Margin="5,0,0,0" Text="{Binding NajmniejszeWynagrodzenie}" VerticalAlignment="Center"/>
+                                                    <TextBlock Foreground="White" Text="-" VerticalAlignment="Center"/>
+                                                    <TextBlock Foreground="White" Text="{Binding NajwiekszeWynagrodzenie}" VerticalAlignment="Center"/>
+                                                    <TextBlock Foreground="White" Text=" zł/ mies" VerticalAlignment="Center"/>
+                                                </StackPanel>
                                             </StackPanel>
 
                                             <StackPanel Orientation="Horizontal" Margin="0,20,0,0">

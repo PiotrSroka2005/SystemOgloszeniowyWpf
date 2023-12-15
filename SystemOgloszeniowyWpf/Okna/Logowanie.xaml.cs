@@ -37,11 +37,7 @@ namespace SystemOgloszeniowyWpf.Okna
         {
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Password;
-
-
-            int administrator = 0;
-            string patter = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
-
+           
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Please enter a username and password.", "Registration Error", MessageBoxButton.OK, MessageBoxImage.Error);

@@ -35,6 +35,9 @@
 
     <ScrollViewer>
         <Border CornerRadius="5" Margin="0,0,0,0" Width="480" Height="840" BorderBrush="#222222" HorizontalAlignment="Center" Background="gray" BorderThickness="2">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="10" BlurRadius="30" Color="#222222" Opacity="0.9" Direction="270" />
+            </Border.Effect>
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Label Content="Tytul:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-70,-35,0,0" />
                 <TextBox x:Name="TxBTytul" HorizontalAlignment="Left" FontSize="16" Height="25" VerticalAlignment="Top" Margin="70,-30,20,0" Width="200" />

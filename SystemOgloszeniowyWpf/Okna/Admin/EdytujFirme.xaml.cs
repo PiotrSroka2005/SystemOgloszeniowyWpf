@@ -21,8 +21,7 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
     /// </summary>
     public partial class EdytujFirme : Window
     {
-        private ObservableCollection<Firma> firmy;
-
+       
         private int _id;
 
 

@@ -33,6 +33,9 @@
         </Style>
     </Window.Resources>
     <Border CornerRadius="5" Margin="0,-90,0,0" Width="430" Height="300" BorderBrush="#222222" HorizontalAlignment="Center" Background="gray" BorderThickness="2">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="10" BlurRadius="30" Color="#222222" Opacity="0.9" Direction="270" />
+        </Border.Effect>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
             <Label Content="Nazwa kategorii:" HorizontalAlignment="Left" FontSize="14" VerticalAlignment="Top" Margin="-85,20,0,20" />
             <TextBox x:Name="NameTextBox" HorizontalAlignment="Left" FontSize="16" Height="25" VerticalAlignment="Top" Margin="30,25,20,0" Width="200" />

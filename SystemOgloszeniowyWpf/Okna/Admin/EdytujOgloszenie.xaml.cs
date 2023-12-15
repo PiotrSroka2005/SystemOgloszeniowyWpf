@@ -23,10 +23,8 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
     /// </summary>
     public partial class EdytujOgloszenie : Window
     {
-
         private List<Kategoria> kategorie;
-        private List<Firma> firmy;
-        private ObservableCollection<Ogloszenie> ogloszenia;
+        private List<Firma> firmy;        
         private int admin = 0;
         private bool logged = false;
         private string usermn = "";
@@ -153,8 +151,8 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
             }
 
             if (!(string.IsNullOrWhiteSpace(TxBTytul.Text) || string.IsNullOrWhiteSpace(TxBNazwaStanowiska.Text) || string.IsNullOrWhiteSpace(TxBRodzajPracy.Text) || string.IsNullOrWhiteSpace(TxBWymiarZatrudnienia.Text) ||
-      string.IsNullOrWhiteSpace(TxBRodzajUmowy.Text) || string.IsNullOrWhiteSpace(TxBTytul.Text) || string.IsNullOrWhiteSpace(TxBNajmniejszeWynagrodzenie.Text) || string.IsNullOrWhiteSpace(TxBNajwiekszeWynagrodzenie.Text) || string.IsNullOrWhiteSpace(TxBDniPracy.Text) ||
-      string.IsNullOrWhiteSpace(TxBGodzinyPracy.Text) || string.IsNullOrWhiteSpace(TxBDataWaznosci.Text) || string.IsNullOrWhiteSpace(TxBObowiazki.Text) || string.IsNullOrWhiteSpace(TxBWymagania.Text) || string.IsNullOrWhiteSpace(TxBBenefity.Text) || string.IsNullOrWhiteSpace(TxBInformacje.Text) || string.IsNullOrWhiteSpace(TxBZdjecie.Text)))
+            string.IsNullOrWhiteSpace(TxBRodzajUmowy.Text) || string.IsNullOrWhiteSpace(TxBTytul.Text) || string.IsNullOrWhiteSpace(TxBNajmniejszeWynagrodzenie.Text) || string.IsNullOrWhiteSpace(TxBNajwiekszeWynagrodzenie.Text) || string.IsNullOrWhiteSpace(TxBDniPracy.Text) ||
+            string.IsNullOrWhiteSpace(TxBGodzinyPracy.Text) || string.IsNullOrWhiteSpace(TxBDataWaznosci.Text) || string.IsNullOrWhiteSpace(TxBObowiazki.Text) || string.IsNullOrWhiteSpace(TxBWymagania.Text) || string.IsNullOrWhiteSpace(TxBBenefity.Text) || string.IsNullOrWhiteSpace(TxBInformacje.Text) || string.IsNullOrWhiteSpace(TxBZdjecie.Text)))
             {
                 if(wybranaKategoria != null)
                 {

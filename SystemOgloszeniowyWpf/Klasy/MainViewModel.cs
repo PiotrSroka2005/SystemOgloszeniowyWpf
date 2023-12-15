@@ -9,7 +9,7 @@ namespace SystemOgloszeniowyWpf.Klasy
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private List<Ogloszenie> _ogloszenia;
+        private List<Ogloszenie>? _ogloszenia;
 
         public List<Ogloszenie> Ogloszenia
         {
@@ -24,7 +24,7 @@ namespace SystemOgloszeniowyWpf.Klasy
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

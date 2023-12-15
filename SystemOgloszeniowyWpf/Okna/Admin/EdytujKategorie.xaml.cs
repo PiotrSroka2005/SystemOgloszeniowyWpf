@@ -21,8 +21,7 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
     /// </summary>
     public partial class EdytujKategorie : Window
     {
-
-        private ObservableCollection<Kategoria> kategorie;
+        
 
         private int _id;
 

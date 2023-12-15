@@ -290,10 +290,10 @@ namespace SystemOgloszeniowyWpf.Okna
 
         private void Szczegoly_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
+            Button button = (Button)sender;
 
 
-            Ogloszenie ogloszenie = button?.DataContext as Ogloszenie;
+            Ogloszenie ogloszenie = (Ogloszenie)button.DataContext;
 
 
             if (ogloszenie != null)
