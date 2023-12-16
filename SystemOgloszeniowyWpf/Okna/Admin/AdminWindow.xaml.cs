@@ -65,7 +65,10 @@ namespace SystemOgloszeniowyWpf.Okna.Admin
        
         private void giveAdmin(object sender, RoutedEventArgs e)
         {
-
+           
+            ZarzadzanieAdminem adm = new ZarzadzanieAdminem(admin, logged, usermn);
+            adm.Show();
+            this.Close();
         }
     }
 }

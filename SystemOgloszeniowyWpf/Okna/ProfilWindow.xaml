@@ -43,7 +43,7 @@
             <Setter Property="FontSize" Value="14"/>
         </Style>
         <Style TargetType="Button" x:Key="CustomButton">
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="Height" Value="25"/>
             <Setter Property="Width" Value="70"/>
             <Setter Property="Background" Value="#222222"/>
             <Setter Property="FontSize" Value="14" />
@@ -51,7 +51,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="Cyan" BorderThickness="1" CornerRadius="5">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="white" BorderThickness="2" CornerRadius="5">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -108,21 +108,36 @@
 
         <ScrollViewer Grid.Row="2">
             <StackPanel>
-                <Border  BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="150,5,150,0" CornerRadius="5">
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel>
-                            <Border BorderBrush="Cyan" BorderThickness="2" Margin="10,10,0,10" Background="White" CornerRadius="99">
-                                <StackPanel Height="125" Width="125">
-                                    <Image Source="../Images/user.png" Width="100" Height="125"/>
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Path=Profile, UpdateSourceTrigger=PropertyChanged}" x:Name="zdjecie">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="1" MaxWidth="4300"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Border  BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="150,5,150,0" CornerRadius="5">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel>
+                                                <Border BorderBrush="Cyan" BorderThickness="2" Margin="10,10,0,10" Background="White" CornerRadius="99">
+                                                    <StackPanel Height="125" Width="125">
+                                                        <Image Source="../Images/user.png" Width="100" Height="125"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                <Button Content="dodaj" Style="{StaticResource CustomButton}" Click="ZdjProf_Click"/>
+                                            </StackPanel>
+                                            <StackPanel>
+
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
                                 </StackPanel>
-                            </Border>
-                            <Button Content="dodaj" Style="{StaticResource CustomButton}"/>
-                        </StackPanel>
-                        <StackPanel>
-                            
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
 
 
                 <StackPanel>

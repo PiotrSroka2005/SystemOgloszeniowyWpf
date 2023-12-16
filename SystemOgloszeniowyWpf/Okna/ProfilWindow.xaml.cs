@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
@@ -12,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SystemOgloszeniowyWpf.Klasy;
 using SystemOgloszeniowyWpf.Okna;
 using SystemOgloszeniowyWpf.Okna.Admin;
 
@@ -52,6 +56,12 @@ namespace SystemOgloszeniowyWpf
                     PanelAdm.Visibility = Visibility.Collapsed;
                 }
             }
+
+
+            MainViewProfile viewModel = new MainViewProfile();
+            DataContext = viewModel;
+
+            viewModel.Profile = Baza.CzytajProfil(usermn);
         }
 
         private void ZalogujSie_Click(object sender, RoutedEventArgs e)
@@ -83,5 +93,50 @@ namespace SystemOgloszeniowyWpf
             this.Close();
         }
 
+        private void ZdjProf_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            
+            openFileDialog.Filter = "Pliki obrazów|*.jpg;*.jpeg;*.png;*.gif;*.bmp|Wszystkie pliki|*.*";
+            
+            bool? wynik = openFileDialog.ShowDialog();
+            
+            if (wynik == true)
+            {                
+                string oryginalnaSciezkaDoPliku = openFileDialog.FileName;
+                
+                string folderImages = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".../Images");
+                
+                if (!Directory.Exists(folderImages))
+                {
+                    Directory.CreateDirectory(folderImages);
+                }
+               
+                string sciezkaDoZapisanegoPliku = System.IO.Path.Combine(folderImages, System.IO.Path.GetFileName(oryginalnaSciezkaDoPliku));
+                
+                File.Copy(oryginalnaSciezkaDoPliku, sciezkaDoZapisanegoPliku, true);
+                              
+                ZapiszSciezkeDoBazyDanych(sciezkaDoZapisanegoPliku);
+                
+                MessageBox.Show("Plik zapisano w folderze 'Images' i ścieżka została zapisana w bazie danych.");
+            }
+        }
+
+        private void ZapiszSciezkeDoBazyDanych(string sciezka)
+        {
+            
+            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+                var insertCommand = new SqliteCommand();
+                insertCommand.Connection = db;
+                insertCommand.CommandText = "INSERT INTO profil (zdjecie_profilowe) VALUES ('@Sciezka'));";                
+                insertCommand.Parameters.AddWithValue("@Sciezka", sciezka);
+                insertCommand.ExecuteReader();
+            }
+            
+        }
     }
 }

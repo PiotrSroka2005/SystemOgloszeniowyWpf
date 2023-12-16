@@ -46,6 +46,116 @@ namespace SystemOgloszeniowyWpf.Klasy
         }
 
 
+        public static List<Uzytkownik> GetAllUsers()
+        {
+            List<Uzytkownik> users = new List<Uzytkownik>();
+
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+                var insertCommand = new SqliteCommand();
+                insertCommand.Connection = db;
+                insertCommand.CommandText = "SELECT * FROM uzytkownicy";
+
+                using (SqliteDataReader reader = insertCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int uzytkownik_id = reader.GetInt32(0);
+                        string nick = reader.GetString(1);
+                        string haslo = reader.GetString(2);
+                        string email = reader.GetString(3);
+                        bool administrator = reader.GetBoolean(4);
+
+                        Uzytkownik user = new Uzytkownik(uzytkownik_id, nick, haslo, email, administrator);
+                        users.Add(user);
+                    }
+                }
+                return users;
+            }
+        }
+
+        public static void GiveUserAdmin(Uzytkownik uzytkownik)
+        {
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+                var updateCommand = new SqliteCommand();
+                updateCommand.Connection = db;
+                updateCommand.CommandText = "UPDATE uzytkownicy SET administrator = @Administrator WHERE uzytkownik_id = @ID;";
+                updateCommand.Parameters.AddWithValue("@ID", uzytkownik.ID);
+                updateCommand.Parameters.AddWithValue("@Administrator", uzytkownik.Administrator);
+
+                updateCommand.ExecuteNonQuery();
+            }
+        }
+
+
+        public static void TabelaProfile()
+        {
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                string tableCommand = "CREATE TABLE IF NOT EXISTS profile(profil_id INTEGER PRIMARY KEY AUTOINCREMENT, uzytkownik_id INTEGER, imie TEXT, nazwisko TEXT, miasto TEXT, numer_telefonu INTEGER, zdjecie_profilowe TEXT, stanowisko TEXT, podsumowanie_zawodowe TEXT, FOREIGN KEY(uzytkownik_id) REFERENCES uzytkownicy(uzytkownik_id));" +
+                "CREATE TABLE IF NOT EXISTS doswiadczenie_zawodowe(doswiadczenie_zawodowe_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, stanowisko TEXT, nazwa_firmy TEXT, okres_zatrudnienia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+                "CREATE TABLE IF NOT EXISTS wyksztalcenie(wyksztalcenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, miejsce_edukacji TEXT, poziom_wykszalcenia TEXT, kierunek TEXT, okres_wyksztalcenia TEXT , FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+                "CREATE TABLE IF NOT EXISTS jezyki(jezyk_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_jezyka TEXT, poziom_jezyka TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+                "CREATE TABLE IF NOT EXISTS umiejetnosci(umiejetnosc_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_umiejetnosci TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+                "CREATE TABLE IF NOT EXISTS dodatkowe_szkolenia(szkolenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_szkolenia TEXT, organizator TEXT, okres_szkolenia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+                "CREATE TABLE IF NOT EXISTS linki(link_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, link TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));";
+                var createTable = new SqliteCommand(tableCommand, db);
+                createTable.ExecuteNonQuery();
+            }
+        }
+
+        public static List<Profil> CzytajProfil(string user)
+        {
+            List<Profil> profile = new List<Profil>();
+
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                var selectCommand = new SqliteCommand();
+                selectCommand.Connection = db;
+                selectCommand.CommandText = "SELECT * FROM profile p INNER JOIN uzytkownicy u ON p.uzytkownik_id = u.uzytkownik_id WHERE u.nick = @uzytkownik";
+                selectCommand.Parameters.AddWithValue("@uzytkownik", user);
+                using (SqliteDataReader reader = selectCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int profilId = reader.GetInt32(0);
+                        int uzytkownikId = reader.GetInt32(1);
+                        string imie = reader.GetString(2);
+                        string nazwisko = reader.GetString(3);
+                        string miasto = reader.GetString(4);
+                        int numerTelefonu = reader.GetInt32(5);
+                        string zdjecieProfilowe = reader.GetString(6);
+                        string stanowisko = reader.GetString(7);
+                        string podsuowanieZawodowe = reader.GetString(8);                       
+
+                        Profil prof = new Profil(profilId, uzytkownikId, imie, nazwisko, miasto, numerTelefonu, zdjecieProfilowe, stanowisko, podsuowanieZawodowe);
+
+                        profile.Add(prof);
+                    }
+                }
+            }
+
+            return profile;
+        }
+
+
+
+
         public static void TabelaOgloszenia()
         {
             string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
@@ -638,6 +748,9 @@ namespace SystemOgloszeniowyWpf.Klasy
                 updateCommand.ExecuteNonQuery();
             }
         }
+
+
+        
 
     }    
 }

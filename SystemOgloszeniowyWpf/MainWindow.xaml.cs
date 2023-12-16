@@ -39,6 +39,7 @@ namespace SystemOgloszeniowyWpf
 
             Baza.TabelaUzytkownikow();
             Baza.TabelaOgloszenia();
+            Baza.TabelaProfile();
 
             uzytkownik.Visibility = Visibility.Collapsed;
             PanelAdm.Visibility = Visibility.Collapsed;

@@ -86,13 +86,11 @@ namespace SystemOgloszeniowyWpf.Okna
 
         private bool IsUsernameExistsInDatabase(string username)
         {
-            // Połączenie z bazą danych
             string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
             using (var db = new SqliteConnection($"Filename={dbPath}"))
             {
                 db.Open();
 
-                // Sprawdzenie, czy email istniej   e w bazie danych
                 var selectCommand = new SqliteCommand();
                 selectCommand.Connection = db;
                 selectCommand.CommandText = "SELECT COUNT() FROM uzytkownicy WHERE nick = @Username;";
@@ -106,14 +104,12 @@ namespace SystemOgloszeniowyWpf.Okna
 
 
         private bool IsPasswordCorrect(string password)
-        {
-            // Połączenie z bazą danych
+        {           
             string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
             using (var db = new SqliteConnection($"Filename={dbPath}"))
             {
                 db.Open();
-
-                // Sprawdzenie, czy email istniej   e w bazie danych
+                
                 var selectCommand = new SqliteCommand();
                 selectCommand.Connection = db;
                 selectCommand.CommandText = "SELECT COUNT() FROM uzytkownicy WHERE haslo = @Password;";
@@ -127,8 +123,7 @@ namespace SystemOgloszeniowyWpf.Okna
 
 
         private bool IsAdmin(string username)
-        {
-            // Połączenie z bazą danych
+        {            
             string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
             using (var db = new SqliteConnection($"Filename={dbPath}"))
             {
