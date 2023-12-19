@@ -38,8 +38,7 @@ namespace SystemOgloszeniowyWpf
             InitializeComponent();
 
             Baza.TabelaUzytkownikow();
-            Baza.TabelaOgloszenia();
-            Baza.TabelaProfile();
+            Baza.TabelaOgloszenia();            
 
             uzytkownik.Visibility = Visibility.Collapsed;
             PanelAdm.Visibility = Visibility.Collapsed;
@@ -70,6 +69,7 @@ namespace SystemOgloszeniowyWpf
             usermn = user;
             admin = adm;
             logged = log;
+            
 
             if (logged == false)
             {

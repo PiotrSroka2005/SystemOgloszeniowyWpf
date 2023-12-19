@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Intrinsics.Arm;
@@ -18,6 +19,7 @@ using System.Windows.Shapes;
 using SystemOgloszeniowyWpf.Klasy;
 using SystemOgloszeniowyWpf.Okna;
 using SystemOgloszeniowyWpf.Okna.Admin;
+using SystemOgloszeniowyWpf.Okna.Profil;
 
 namespace SystemOgloszeniowyWpf
 {
@@ -25,7 +27,7 @@ namespace SystemOgloszeniowyWpf
     /// Logika interakcji dla klasy Profil.xaml
     /// </summary>
     public partial class ProfilWindow : Window
-    {
+    {       
         private int admin = 0;
         private bool logged = false;
         private string usermn = "";
@@ -33,10 +35,17 @@ namespace SystemOgloszeniowyWpf
         public ProfilWindow(int adm, bool log, string user)
         {
             InitializeComponent();
-            PanelAdm.Visibility = Visibility.Collapsed;
+            
+            PanelAdm.Visibility = Visibility.Collapsed;                                    
             usermn = user;
             admin = adm;
             logged = log;
+
+
+            Baza.TabelaProfile(usermn);
+            
+          
+
 
             if (logged == false)
             {
@@ -95,48 +104,11 @@ namespace SystemOgloszeniowyWpf
 
         private void ZdjProf_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            
-            openFileDialog.Filter = "Pliki obrazów|*.jpg;*.jpeg;*.png;*.gif;*.bmp|Wszystkie pliki|*.*";
-            
-            bool? wynik = openFileDialog.ShowDialog();
-            
-            if (wynik == true)
-            {                
-                string oryginalnaSciezkaDoPliku = openFileDialog.FileName;
-                
-                string folderImages = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".../Images");
-                
-                if (!Directory.Exists(folderImages))
-                {
-                    Directory.CreateDirectory(folderImages);
-                }
-               
-                string sciezkaDoZapisanegoPliku = System.IO.Path.Combine(folderImages, System.IO.Path.GetFileName(oryginalnaSciezkaDoPliku));
-                
-                File.Copy(oryginalnaSciezkaDoPliku, sciezkaDoZapisanegoPliku, true);
-                              
-                ZapiszSciezkeDoBazyDanych(sciezkaDoZapisanegoPliku);
-                
-                MessageBox.Show("Plik zapisano w folderze 'Images' i ścieżka została zapisana w bazie danych.");
-            }
+            ZarzadzajZdjeciem z = new ZarzadzajZdjeciem(admin, logged, usermn);
+            z.Show();
+            this.Close();
+           
         }
-
-        private void ZapiszSciezkeDoBazyDanych(string sciezka)
-        {
-            
-            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
-
-            using (var db = new SqliteConnection($"Filename={dbPath}"))
-            {
-                db.Open();
-                var insertCommand = new SqliteCommand();
-                insertCommand.Connection = db;
-                insertCommand.CommandText = "INSERT INTO profil (zdjecie_profilowe) VALUES ('@Sciezka'));";                
-                insertCommand.Parameters.AddWithValue("@Sciezka", sciezka);
-                insertCommand.ExecuteReader();
-            }
-            
-        }
+       
     }
 }

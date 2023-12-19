@@ -13,22 +13,22 @@ namespace SystemOgloszeniowyWpf.Klasy
 
         public int UzytkownikId { get; set; }
 
-        public string Imie {  get; set; }
+        public string? Imie {  get; set; }
 
-        public string Nazwisko { get; set; }
+        public string? Nazwisko { get; set; }
 
-        public string Miasto { get; set; }
+        public string? Miasto { get; set; }
 
-        public int NumerTelefonu { get; set; }
+        public int? NumerTelefonu { get; set; }
 
-        public string ZdjecieProfilowe { get; set; }
+        public string? ZdjecieProfilowe { get; set; }
 
-        public string Stanowisko { get; set; }
+        public string? Stanowisko { get; set; }
 
-        public string PodsumowanieZawodowe {  get; set; }
+        public string? PodsumowanieZawodowe {  get; set; }
 
-        public Profil(int profilId, int uzytkownikId, string imie, string nazwisko, string miasto, int numerTelefonu, string zdjecieProfilowe, string stanowisko
-            ,string podsumowanieZawodowe)
+        public Profil(int profilId, int uzytkownikId, string? imie, string? nazwisko, string? miasto, int? numerTelefonu, string? zdjecieProfilowe, string? stanowisko
+            ,string? podsumowanieZawodowe)
         {
             ProfilId = profilId;
 

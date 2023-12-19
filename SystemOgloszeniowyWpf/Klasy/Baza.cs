@@ -95,7 +95,27 @@ namespace SystemOgloszeniowyWpf.Klasy
         }
 
 
-        public static void TabelaProfile()
+        //public static void TabelaProfile(string user)
+        //{
+        //    string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+        //    using (var db = new SqliteConnection($"Filename={dbPath}"))
+        //    {
+        //        db.Open();
+
+        //        string tableCommand = "CREATE TABLE IF NOT EXISTS profile(profil_id INTEGER PRIMARY KEY AUTOINCREMENT, uzytkownik_id INTEGER, imie TEXT, nazwisko TEXT, miasto TEXT, numer_telefonu INTEGER, zdjecie_profilowe TEXT, stanowisko TEXT, podsumowanie_zawodowe TEXT, FOREIGN KEY(uzytkownik_id) REFERENCES uzytkownicy(uzytkownik_id));" +
+        //        "CREATE TABLE IF NOT EXISTS doswiadczenie_zawodowe(doswiadczenie_zawodowe_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, stanowisko TEXT, nazwa_firmy TEXT, okres_zatrudnienia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+        //        "CREATE TABLE IF NOT EXISTS wyksztalcenie(wyksztalcenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, miejsce_edukacji TEXT, poziom_wykszalcenia TEXT, kierunek TEXT, okres_wyksztalcenia TEXT , FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+        //        "CREATE TABLE IF NOT EXISTS jezyki(jezyk_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_jezyka TEXT, poziom_jezyka TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+        //        "CREATE TABLE IF NOT EXISTS umiejetnosci(umiejetnosc_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_umiejetnosci TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+        //        "CREATE TABLE IF NOT EXISTS dodatkowe_szkolenia(szkolenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_szkolenia TEXT, organizator TEXT, okres_szkolenia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
+        //        "CREATE TABLE IF NOT EXISTS linki(link_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, link TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));";
+        //        var createTable = new SqliteCommand(tableCommand, db);
+        //        createTable.ExecuteNonQuery();
+        //    }
+        //}
+
+        public static void TabelaProfile(string user)
         {
             string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
 
@@ -103,15 +123,92 @@ namespace SystemOgloszeniowyWpf.Klasy
             {
                 db.Open();
 
-                string tableCommand = "CREATE TABLE IF NOT EXISTS profile(profil_id INTEGER PRIMARY KEY AUTOINCREMENT, uzytkownik_id INTEGER, imie TEXT, nazwisko TEXT, miasto TEXT, numer_telefonu INTEGER, zdjecie_profilowe TEXT, stanowisko TEXT, podsumowanie_zawodowe TEXT, FOREIGN KEY(uzytkownik_id) REFERENCES uzytkownicy(uzytkownik_id));" +
-                "CREATE TABLE IF NOT EXISTS doswiadczenie_zawodowe(doswiadczenie_zawodowe_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, stanowisko TEXT, nazwa_firmy TEXT, okres_zatrudnienia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-                "CREATE TABLE IF NOT EXISTS wyksztalcenie(wyksztalcenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, miejsce_edukacji TEXT, poziom_wykszalcenia TEXT, kierunek TEXT, okres_wyksztalcenia TEXT , FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-                "CREATE TABLE IF NOT EXISTS jezyki(jezyk_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_jezyka TEXT, poziom_jezyka TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-                "CREATE TABLE IF NOT EXISTS umiejetnosci(umiejetnosc_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_umiejetnosci TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-                "CREATE TABLE IF NOT EXISTS dodatkowe_szkolenia(szkolenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_szkolenia TEXT, organizator TEXT, okres_szkolenia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-                "CREATE TABLE IF NOT EXISTS linki(link_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, link TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));";
-                var createTable = new SqliteCommand(tableCommand, db);
-                createTable.ExecuteNonQuery();
+                // Najpierw sprawdzamy, czy użytkownik o podanym nicku istnieje w tabeli "uzytkownicy"
+                var selectUserCommand = new SqliteCommand();
+                selectUserCommand.Connection = db;
+                selectUserCommand.CommandText = "SELECT uzytkownik_id FROM uzytkownicy WHERE nick = @uzytkownik";
+                selectUserCommand.Parameters.AddWithValue("@uzytkownik", user);
+
+                int uzytkownikId = -1; // Domyślna wartość w przypadku braku użytkownika
+
+                using (SqliteDataReader userReader = selectUserCommand.ExecuteReader())
+                {
+                    if (userReader.Read())
+                    {
+                        uzytkownikId = userReader.GetInt32(0);
+                    }
+                }
+
+                // Tworzenie tabel i przypisanie "uzytkownik_id" w tabeli "profile" zgodnie z "nick"
+                string createTablesCommand = @"
+            CREATE TABLE IF NOT EXISTS profile(
+                profil_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                uzytkownik_id INTEGER, 
+                imie TEXT, 
+                nazwisko TEXT, 
+                miasto TEXT, 
+                numer_telefonu INTEGER, 
+                zdjecie_profilowe TEXT, 
+                stanowisko TEXT, 
+                podsumowanie_zawodowe TEXT, 
+                FOREIGN KEY(uzytkownik_id) REFERENCES uzytkownicy(uzytkownik_id)
+            );
+            INSERT INTO profile (uzytkownik_id) SELECT uzytkownik_id FROM uzytkownicy WHERE nick = @uzytkownik;
+
+            CREATE TABLE IF NOT EXISTS doswiadczenie_zawodowe(
+                doswiadczenie_zawodowe_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                profil_id INTEGER, 
+                stanowisko TEXT, 
+                nazwa_firmy TEXT, 
+                okres_zatrudnienia TEXT, 
+                FOREIGN KEY(profil_id) REFERENCES profile(profil_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS wyksztalcenie(
+                wyksztalcenie_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                profil_id INTEGER, 
+                miejsce_edukacji TEXT, 
+                poziom_wykszalcenia TEXT, 
+                kierunek TEXT, 
+                okres_wyksztalcenia TEXT, 
+                FOREIGN KEY(profil_id) REFERENCES profile(profil_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS jezyki(
+                jezyk_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                profil_id INTEGER, 
+                nazwa_jezyka TEXT, 
+                poziom_jezyka TEXT, 
+                FOREIGN KEY(profil_id) REFERENCES profile(profil_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS umiejetnosci(
+                umiejetnosc_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                profil_id INTEGER, 
+                nazwa_umiejetnosci TEXT, 
+                FOREIGN KEY(profil_id) REFERENCES profile(profil_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS dodatkowe_szkolenia(
+                szkolenie_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                profil_id INTEGER, 
+                nazwa_szkolenia TEXT, 
+                organizator TEXT, 
+                okres_szkolenia TEXT, 
+                FOREIGN KEY(profil_id) REFERENCES profile(profil_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS linki(
+                link_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                profil_id INTEGER, 
+                link TEXT, 
+                FOREIGN KEY(profil_id) REFERENCES profile(profil_id)
+            );
+        ";
+
+                var createTables = new SqliteCommand(createTablesCommand, db);
+                createTables.Parameters.AddWithValue("@uzytkownik", user);
+                createTables.ExecuteNonQuery();
             }
         }
 
@@ -135,13 +232,13 @@ namespace SystemOgloszeniowyWpf.Klasy
                     {
                         int profilId = reader.GetInt32(0);
                         int uzytkownikId = reader.GetInt32(1);
-                        string imie = reader.GetString(2);
-                        string nazwisko = reader.GetString(3);
-                        string miasto = reader.GetString(4);
-                        int numerTelefonu = reader.GetInt32(5);
-                        string zdjecieProfilowe = reader.GetString(6);
-                        string stanowisko = reader.GetString(7);
-                        string podsuowanieZawodowe = reader.GetString(8);                       
+                        string? imie = reader.IsDBNull(2) ? null : reader.GetString(2);
+                        string? nazwisko = reader.IsDBNull(3) ? null : reader.GetString(3);
+                        string? miasto = reader.IsDBNull(4) ? null : reader.GetString(4);
+                        int? numerTelefonu = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5);
+                        string? zdjecieProfilowe = reader.IsDBNull(6) ? null : reader.GetString(6);
+                        string? stanowisko = reader.IsDBNull(7) ? null : reader.GetString(7);
+                        string? podsuowanieZawodowe = reader.IsDBNull(8) ? null : reader.GetString(8);
 
                         Profil prof = new Profil(profilId, uzytkownikId, imie, nazwisko, miasto, numerTelefonu, zdjecieProfilowe, stanowisko, podsuowanieZawodowe);
 
