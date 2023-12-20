@@ -30,6 +30,8 @@ namespace SystemOgloszeniowyWpf.Klasy
             Administrator = admin;
             Email = email;
         }
+
+        public Uzytkownik() { }
        
     }
 }

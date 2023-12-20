@@ -233,6 +233,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                <Button x:Name="Aplikowanie" Style="{StaticResource CustomButton}" HorizontalAlignment="Left" Click="Aplikuj_Click" Content="Aplikuj" Margin="10,10,0,0" FontSize="15" Width="200"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

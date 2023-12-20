@@ -44,8 +44,6 @@ namespace SystemOgloszeniowyWpf
 
             Baza.TabelaProfile(usermn);
             
-          
-
 
             if (logged == false)
             {
@@ -66,11 +64,13 @@ namespace SystemOgloszeniowyWpf
                 }
             }
 
-
-            MainViewProfile viewModel = new MainViewProfile();
+            MainViewProfile viewModel = new MainViewProfile(usermn);
             DataContext = viewModel;
 
+            viewModel.Aplikacje = Baza.PobierzAplikacjeUzytkownika(usermn);
             viewModel.Profile = Baza.CzytajProfil(usermn);
+
+
         }
 
         private void ZalogujSie_Click(object sender, RoutedEventArgs e)
@@ -109,6 +109,26 @@ namespace SystemOgloszeniowyWpf
             this.Close();
            
         }
-       
+
+        private void Usun_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                var aplikacja = button.DataContext as Aplikacja;
+                if (aplikacja != null)
+                {
+                    Baza.UsunAplikacje(aplikacja.IdOgloszenia, aplikacja.NazwaUzytkownika);
+
+                    var viewModel = DataContext as MainViewProfile;
+                    if (viewModel != null)
+                    {
+                        viewModel.Aplikacje = Baza.PobierzAplikacjeUzytkownika(usermn);
+                    }
+                }
+            }
+        }
+
+        
     }
 }

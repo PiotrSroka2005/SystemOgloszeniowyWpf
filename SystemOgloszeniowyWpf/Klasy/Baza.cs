@@ -45,6 +45,37 @@ namespace SystemOgloszeniowyWpf.Klasy
             }
         }
 
+        public static Uzytkownik PobierzUzytkownika(string nick)
+        {
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                string query = "SELECT * FROM uzytkownicy WHERE nick = @Nick";
+                var command = new SqliteCommand(query, db);
+                command.Parameters.AddWithValue("@Nick", nick);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var uzytkownik = new Uzytkownik
+                        {
+                            ID = reader.GetInt32(0),
+                            Nick = reader.GetString(1),
+                            Haslo = reader.GetString(2),
+                            Email = reader.GetString(3),
+                            Administrator = reader.GetBoolean(4)
+                        };
+                        return uzytkownik;
+                    }
+                }
+            }
+
+            return null; 
+        }
 
         public static List<Uzytkownik> GetAllUsers()
         {
@@ -94,27 +125,6 @@ namespace SystemOgloszeniowyWpf.Klasy
             }
         }
 
-
-        //public static void TabelaProfile(string user)
-        //{
-        //    string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
-
-        //    using (var db = new SqliteConnection($"Filename={dbPath}"))
-        //    {
-        //        db.Open();
-
-        //        string tableCommand = "CREATE TABLE IF NOT EXISTS profile(profil_id INTEGER PRIMARY KEY AUTOINCREMENT, uzytkownik_id INTEGER, imie TEXT, nazwisko TEXT, miasto TEXT, numer_telefonu INTEGER, zdjecie_profilowe TEXT, stanowisko TEXT, podsumowanie_zawodowe TEXT, FOREIGN KEY(uzytkownik_id) REFERENCES uzytkownicy(uzytkownik_id));" +
-        //        "CREATE TABLE IF NOT EXISTS doswiadczenie_zawodowe(doswiadczenie_zawodowe_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, stanowisko TEXT, nazwa_firmy TEXT, okres_zatrudnienia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-        //        "CREATE TABLE IF NOT EXISTS wyksztalcenie(wyksztalcenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, miejsce_edukacji TEXT, poziom_wykszalcenia TEXT, kierunek TEXT, okres_wyksztalcenia TEXT , FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-        //        "CREATE TABLE IF NOT EXISTS jezyki(jezyk_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_jezyka TEXT, poziom_jezyka TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-        //        "CREATE TABLE IF NOT EXISTS umiejetnosci(umiejetnosc_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_umiejetnosci TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-        //        "CREATE TABLE IF NOT EXISTS dodatkowe_szkolenia(szkolenie_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, nazwa_szkolenia TEXT, organizator TEXT, okres_szkolenia TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));" +
-        //        "CREATE TABLE IF NOT EXISTS linki(link_id INTEGER PRIMARY KEY AUTOINCREMENT, profil_id INTEGER, link TEXT, FOREIGN KEY(profil_id) REFERENCES profile(profil_id));";
-        //        var createTable = new SqliteCommand(tableCommand, db);
-        //        createTable.ExecuteNonQuery();
-        //    }
-        //}
-
         public static void TabelaProfile(string user)
         {
             string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
@@ -123,13 +133,12 @@ namespace SystemOgloszeniowyWpf.Klasy
             {
                 db.Open();
 
-                // Najpierw sprawdzamy, czy użytkownik o podanym nicku istnieje w tabeli "uzytkownicy"
                 var selectUserCommand = new SqliteCommand();
                 selectUserCommand.Connection = db;
                 selectUserCommand.CommandText = "SELECT uzytkownik_id FROM uzytkownicy WHERE nick = @uzytkownik";
                 selectUserCommand.Parameters.AddWithValue("@uzytkownik", user);
 
-                int uzytkownikId = -1; // Domyślna wartość w przypadku braku użytkownika
+                int uzytkownikId = -1;
 
                 using (SqliteDataReader userReader = selectUserCommand.ExecuteReader())
                 {
@@ -139,7 +148,6 @@ namespace SystemOgloszeniowyWpf.Klasy
                     }
                 }
 
-                // Tworzenie tabel i przypisanie "uzytkownik_id" w tabeli "profile" zgodnie z "nick"
                 string createTablesCommand = @"
             CREATE TABLE IF NOT EXISTS profile(
                 profil_id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -249,9 +257,6 @@ namespace SystemOgloszeniowyWpf.Klasy
 
             return profile;
         }
-
-
-
 
         public static void TabelaOgloszenia()
         {
@@ -443,8 +448,6 @@ namespace SystemOgloszeniowyWpf.Klasy
 
             return ogloszenia;
         }
-
-
         public static List<Ogloszenie> CzytajWszystkieOgloszenia()
         {
             List<Ogloszenie> ogloszenia = new List<Ogloszenie>();
@@ -493,7 +496,6 @@ namespace SystemOgloszeniowyWpf.Klasy
 
             return ogloszenia;
         }
-
 
         public static List<Ogloszenie> CzytajWyszukaneOgloszeniaKategoria(int wybranaKategoria)
         {
@@ -559,13 +561,13 @@ namespace SystemOgloszeniowyWpf.Klasy
                 var selectCommand = new SqliteCommand();
                 selectCommand.Connection = db;
                 selectCommand.CommandText = "SELECT * FROM ogloszenia " +
-                                   "WHERE (@szukana IS NULL OR tytul LIKE @szukana " +
-                                   "OR nazwa_stanowiska LIKE @szukana " +
-                                   "OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE @szukana)) " +
-                                   "AND (@wybranaKategoria <= 0 OR kategoria_id = @wybranaKategoria) " +
-                                   "AND ((@szukana IS NOT NULL AND @wybranaKategoria <= 0) " +
-                                   "OR (tytul LIKE @szukana OR nazwa_stanowiska LIKE @szukana OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE @szukana) AND kategoria_id = @wybranaKategoria)) " +
-                                   "ORDER BY data_utworzenia DESC";
+                "WHERE (@szukana IS NULL OR tytul LIKE @szukana " +
+                "OR nazwa_stanowiska LIKE @szukana " +
+                "OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE @szukana)) " +
+                "AND (@wybranaKategoria <= 0 OR kategoria_id = @wybranaKategoria) " +
+                "AND ((@szukana IS NOT NULL AND @wybranaKategoria <= 0) " +
+                "OR (tytul LIKE @szukana OR nazwa_stanowiska LIKE @szukana OR firma_id IN (SELECT firma_id FROM firmy WHERE nazwa LIKE @szukana) AND kategoria_id = @wybranaKategoria)) " +
+                "ORDER BY data_utworzenia DESC";
 
                 selectCommand.Parameters.AddWithValue("@szukana", szukana != null ? $"%{szukana}%" : (object)DBNull.Value);
                 selectCommand.Parameters.AddWithValue("@wybranaKategoria", wybranaKategoria);
@@ -681,14 +683,12 @@ namespace SystemOgloszeniowyWpf.Klasy
             {
                 db.Open();
 
-                // Usuń powiązane rekordy w tabeli "produkty" dla danej kategorii
                 var deleteProduktyCommand = new SqliteCommand();
                 deleteProduktyCommand.Connection = db;
                 deleteProduktyCommand.CommandText = "DELETE FROM ogloszenia WHERE kategoria_id = @ID;";
                 deleteProduktyCommand.Parameters.AddWithValue("@ID", kategoria.KategoriaId);
                 deleteProduktyCommand.ExecuteReader();
 
-                // Usuń kategorię
                 var deleteKategoriaCommand = new SqliteCommand();
                 deleteKategoriaCommand.Connection = db;
                 deleteKategoriaCommand.CommandText = "DELETE FROM kategorie WHERE kategoria_id = @ID;";
@@ -713,7 +713,6 @@ namespace SystemOgloszeniowyWpf.Klasy
             }
         }
 
-
         public static void EdycjaKategorii(Kategoria kategoria)
         {
             string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
@@ -729,7 +728,6 @@ namespace SystemOgloszeniowyWpf.Klasy
                 updateCommand.ExecuteNonQuery();
             }
         }
-
 
         public static List<Kategoria> CzytajKategorie()
         {
@@ -787,7 +785,6 @@ namespace SystemOgloszeniowyWpf.Klasy
                     }
                 }
             }
-
             return firmy;
         }
 
@@ -846,8 +843,113 @@ namespace SystemOgloszeniowyWpf.Klasy
             }
         }
 
+        public static void UtworzTabeleAplikacji()
+        {
+            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                string tabelaAplikacji = "CREATE TABLE IF NOT EXISTS aplikacje (id INTEGER PRIMARY KEY AUTOINCREMENT, nazwa_uzytkownika TEXT, email_uzytkownika TEXT, tytul_ogloszenia TEXT, id_ogloszenia INTEGER)";
+
+                using (var createTableAplikacje = new SqliteCommand(tabelaAplikacji, db))
+                {
+                    createTableAplikacje.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DodajAplikacje(string nazwaUzytkownika, string emailUzytkownika, string tytulOgloszenia, int idOgloszenia)
+        {
+            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                string insertCommand = "INSERT INTO aplikacje (nazwa_uzytkownika, email_uzytkownika, tytul_ogloszenia, id_ogloszenia) " +
+                                       "VALUES (@NazwaUzytkownika, @EmailUzytkownika, @TytulOgloszenia, @IdOgloszenia)";
+
+                using (var insertStatement = new SqliteCommand(insertCommand, db))
+                {
+                    insertStatement.Parameters.AddWithValue("@NazwaUzytkownika", nazwaUzytkownika);
+                    insertStatement.Parameters.AddWithValue("@EmailUzytkownika", emailUzytkownika);
+                    insertStatement.Parameters.AddWithValue("@TytulOgloszenia", tytulOgloszenia);
+                    insertStatement.Parameters.AddWithValue("@IdOgloszenia", idOgloszenia);
+
+                    insertStatement.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static List<Aplikacja> PobierzAplikacjeUzytkownika(string nazwaUzytkownika)
+        {
+            List<Aplikacja> aplikacje = new List<Aplikacja>();
+            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+                string selectCommand = "SELECT nazwa_uzytkownika, email_uzytkownika, tytul_ogloszenia, id_ogloszenia FROM aplikacje WHERE nazwa_uzytkownika = @NazwaUzytkownika";
+
+                using (var command = new SqliteCommand(selectCommand, db))
+                {
+                    command.Parameters.AddWithValue("@NazwaUzytkownika", nazwaUzytkownika);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var aplikacja = new Aplikacja(
+                                reader.GetString(0),
+                                reader.GetString(1),
+                                reader.GetString(2),
+                                reader.GetInt32(3)
+                            );
+                            aplikacje.Add(aplikacja);
+                        }
+                    }
+                }
+            }
+            return aplikacje;
+        }
 
         
+        public static bool CzyUzytkownikAplikowal(string nazwaUzytkownika, int idOgloszenia)
+        {
+            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
 
+                string selectCommand = "SELECT COUNT(*) FROM aplikacje WHERE nazwa_uzytkownika = @NazwaUzytkownika AND id_ogloszenia = @IdOgloszenia";
+                using (var command = new SqliteCommand(selectCommand, db))
+                {
+                    command.Parameters.AddWithValue("@NazwaUzytkownika", nazwaUzytkownika);
+                    command.Parameters.AddWithValue("@IdOgloszenia", idOgloszenia);
+
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+
+        public static void UsunAplikacje(int idOgloszenia, string nazwaUzytkownika)
+        {
+            string dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "systemOgloszeniowy.db");
+            using (var db = new SqliteConnection($"Filename={dbPath}"))
+            {
+                db.Open();
+
+                string deleteCommand = "DELETE FROM aplikacje WHERE id_ogloszenia = @IdOgloszenia AND nazwa_uzytkownika = @NazwaUzytkownika";
+                using (var command = new SqliteCommand(deleteCommand, db))
+                {
+                    command.Parameters.AddWithValue("@IdOgloszenia", idOgloszenia);
+                    command.Parameters.AddWithValue("@NazwaUzytkownika", nazwaUzytkownika);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }    
 }

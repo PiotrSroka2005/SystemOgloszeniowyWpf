@@ -107,32 +107,65 @@
 
 
         <ScrollViewer Grid.Row="2">
-            <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.45*"/>
+                <ColumnDefinition Width="0.30*"/>
+                </Grid.ColumnDefinitions>
+
+               
+                <StackPanel Grid.Column="0" x:Name="Profil">
+                    <StackPanel x:Name="ZdjEdit">
+                        <Border  BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="10,5,0,0" CornerRadius="5">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <Border BorderBrush="Cyan" BorderThickness="2" Margin="10,10,0,10" Background="White" CornerRadius="99">
+                                        <StackPanel Height="125" Width="125">
+                                            <Image Source="/Images/user.png" Width="100" Height="125"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Button Content="dodaj" Style="{StaticResource CustomButton}" Click="ZdjProf_Click"/>
+                                </StackPanel>
+                                <StackPanel>
+
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
 
 
-                <StackPanel x:Name="ZdjEdit">
-                    <Border  BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="150,5,150,0" CornerRadius="5">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel>
-                                <Border BorderBrush="Cyan" BorderThickness="2" Margin="10,10,0,10" Background="White" CornerRadius="99">
-                                    <StackPanel Height="125" Width="125">
-                                        <Image Source="/Images/user.png" Width="100" Height="125"/>
+
+
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding Path=Ogloszenia, UpdateSourceTrigger=PropertyChanged}" x:Name="DaneOsobowe">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="1" MaxWidth="4300"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Border  BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="10,5,10,0" CornerRadius="5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding Zdjecie}" Width="100" Margin="10,10,10,10"  Height="100"/>
+                                                <StackPanel>
+                                                    <TextBlock Foreground="White" Margin="10,10,0,0" FontSize="25" Text="{Binding Tytul}"/>
+                                                    <TextBlock Text="{Binding NazwaFirmy}" Foreground="White"  FontSize="15" Margin="10,20,0,0" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
                                     </StackPanel>
-                                </Border>
-                                <Button Content="dodaj" Style="{StaticResource CustomButton}" Click="ZdjProf_Click"/>
-                            </StackPanel>
-                            <StackPanel>
-
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </StackPanel>
 
-                
-
-
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Path=Ogloszenia, UpdateSourceTrigger=PropertyChanged}" x:Name="DaneOsobowe">
+               
+                <StackPanel Grid.Column="1" x:Name="Aplikacje" Margin="0,0,10,0">
+                    <Label Content="Twoje aplikacje" HorizontalAlignment="Center" FontSize="35"/>
+                    <ItemsControl ItemsSource="{Binding Path=Aplikacje, UpdateSourceTrigger=PropertyChanged}" x:Name="AplikacjaWidok">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Columns="1" MaxWidth="4300"/>
@@ -140,22 +173,26 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <Border  BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="10,5,10,0" CornerRadius="5">
+                                <Border BorderBrush="Cyan" BorderThickness="2" Background="#222222" Margin="10,15,0,0" CornerRadius="5" MaxWidth="2000">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="10" BlurRadius="30" Color="#222222" Opacity="0.9" Direction="270" />
+                                    </Border.Effect>
+                                    <StackPanel Margin="20,0,0,0">
+                                        <TextBlock Foreground="White" Margin="0,10,0,0" FontSize="15" Text="{Binding NazwaUzytkownika}"/>
+                                        <TextBlock Text="{Binding EmailUzytkownika}" Foreground="White" Margin="0,10,0,0"  FontSize="15" VerticalAlignment="Center" />
+                                        <TextBlock Foreground="White" Text="{Binding TytulOgloszenia}"  Margin="0,10,0,0"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Source="{Binding Zdjecie}" Width="100" Margin="10,10,10,10"  Height="100"/>
-                                            <StackPanel>
-                                                <TextBlock Foreground="White" Margin="10,10,0,0" FontSize="25" Text="{Binding Tytul}"/>
-                                                <TextBlock Text="{Binding NazwaFirmy}" Foreground="White"  FontSize="15" Margin="10,20,0,0" VerticalAlignment="Center" />
-                                            </StackPanel>
+                                            <TextBlock Foreground="White" Text="Id ogłoszenia: " Margin="0,10,0,0" />
+                                            <TextBlock Foreground="White" Margin="0,10,0,10" Text="{Binding IdOgloszenia}"/>
                                         </StackPanel>
-                                    </Border>
-                                </StackPanel>
+                                        <Button Click="Usun_Click" Content="Usuń" HorizontalAlignment="Right" Margin="0,0,10,10" Style="{StaticResource CustomButton}" />
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-            </StackPanel>
+            </Grid>           
         </ScrollViewer>
     </Grid>
 </Window>

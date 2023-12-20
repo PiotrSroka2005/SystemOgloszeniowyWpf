@@ -7,9 +7,23 @@ using System.Threading.Tasks;
 
 namespace SystemOgloszeniowyWpf.Klasy
 {
-    internal class MainViewProfile
+    public class MainViewProfile : INotifyPropertyChanged
     {
-        private List<Profil>? _profile;
+        private List<Aplikacja> _aplikacje;
+        private List<Profil> _profile;
+
+        public List<Aplikacja> Aplikacje
+        {
+            get { return _aplikacje; }
+            set
+            {
+                if (_aplikacje != value)
+                {
+                    _aplikacje = value;
+                    OnPropertyChanged(nameof(Aplikacje));
+                }
+            }
+        }
 
         public List<Profil> Profile
         {
@@ -24,7 +38,14 @@ namespace SystemOgloszeniowyWpf.Klasy
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public MainViewProfile(string usermn)
+        {
+            Aplikacje = Baza.PobierzAplikacjeUzytkownika(usermn);
+            Profile = Baza.CzytajProfil(usermn);
+        }
+
+        // Implementacja interfejsu INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

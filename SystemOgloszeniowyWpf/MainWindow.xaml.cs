@@ -38,7 +38,7 @@ namespace SystemOgloszeniowyWpf
             InitializeComponent();
 
             Baza.TabelaUzytkownikow();
-            Baza.TabelaOgloszenia();            
+            Baza.TabelaOgloszenia();                   
 
             uzytkownik.Visibility = Visibility.Collapsed;
             PanelAdm.Visibility = Visibility.Collapsed;
@@ -65,6 +65,8 @@ namespace SystemOgloszeniowyWpf
         {
             InitializeComponent();
 
+            Baza.UtworzTabeleAplikacji();            
+            Baza.UtworzTabeleAplikacji();
             PanelAdm.Visibility = Visibility.Collapsed;
             usermn = user;
             admin = adm;

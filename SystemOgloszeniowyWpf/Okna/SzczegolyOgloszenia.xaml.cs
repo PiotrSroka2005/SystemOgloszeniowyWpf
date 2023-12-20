@@ -30,6 +30,7 @@ namespace SystemOgloszeniowyWpf.Okna
         public SzczegolyOgloszenia(int adm, bool log, string user, int IdOgloszenia)
         {
             InitializeComponent();
+            
 
             PanelAdm.Visibility = Visibility.Collapsed;
             usermn = user;
@@ -38,6 +39,7 @@ namespace SystemOgloszeniowyWpf.Okna
 
             if (logged == false)
             {
+                Aplikowanie.Visibility = Visibility.Collapsed;
                 Wyl.Visibility = Visibility.Collapsed;
                 uzytkownik.Visibility = Visibility.Collapsed;
                 profil.Visibility = Visibility.Collapsed;
@@ -63,8 +65,7 @@ namespace SystemOgloszeniowyWpf.Okna
             MainViewModel viewModel = new MainViewModel();
             DataContext = viewModel;
 
-            viewModel.Ogloszenia = ogloszenia;
-
+            viewModel.Ogloszenia = ogloszenia;           
         }
 
 
@@ -74,6 +75,7 @@ namespace SystemOgloszeniowyWpf.Okna
 
             Baza.TabelaOgloszenia();
 
+            Aplikowanie.Visibility = Visibility.Collapsed;
             uzytkownik.Visibility = Visibility.Collapsed;
             PanelAdm.Visibility = Visibility.Collapsed;
             Wyl.Visibility = Visibility.Collapsed;
@@ -125,10 +127,45 @@ namespace SystemOgloszeniowyWpf.Okna
         }
 
 
+        private void Aplikuj_Click(object sender, RoutedEventArgs e)
+        {
+            if (ogloszenia != null && ogloszenia.Count > 0 && logged)
+            {
+                try
+                {
+                    Ogloszenie wybraneOgloszenie = ogloszenia[0];
+                    Uzytkownik zalogowanyUzytkownik = Baza.PobierzUzytkownika(usermn);
 
-
-
-
-
+                    if (wybraneOgloszenie != null && zalogowanyUzytkownik != null)
+                    {
+                        
+                        bool juzAplikowano = Baza.CzyUzytkownikAplikowal(zalogowanyUzytkownik.Nick, wybraneOgloszenie.OgloszenieId);
+                        if (!juzAplikowano)
+                        {
+                            Baza.DodajAplikacje(zalogowanyUzytkownik.Nick, zalogowanyUzytkownik.Email, wybraneOgloszenie.Tytul, wybraneOgloszenie.OgloszenieId);
+                            MessageBox.Show("Aplikacja została dodana.");
+                        }
+                        else
+                        {
+                            Aplikowanie.Content = "Już aplikowano";
+                            Aplikowanie.IsEnabled = false; 
+                            MessageBox.Show("Już aplikowałeś na to ogłoszenie.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Wystąpił błąd podczas aplikowania na ogłoszenie. Spróbuj ponownie.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Wystąpił błąd: {ex.Message}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nie możesz aplikować na to ogłoszenie.");
+            }
+        }
     }
 }
